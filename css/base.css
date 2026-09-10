@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Base -- Reset, Body, Global Styles
+   True iOS System Background (clean, not a gradient show)
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--systemBg);
+  color: var(--label);
+  font-family: var(--font-system);
+  font-size: var(--fs-body);
+  line-height: 1.47;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+  transition: background var(--dur) var(--ease),
+              color var(--dur) var(--ease);
+}
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+a {
+  color: var(--systemBlue);
+  text-decoration: none;
+}
+
+/* iOS-style focus ring */
+:focus-visible {
+  outline: 3px solid rgba(0,122,255,0.4);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(0,122,255,0.2);
+}
+
+/* Thin scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--systemGray3);
+  border-radius: var(--r-full);
+}
+
+/* ---- App Root ---- */
+.app {
+  position: relative;
+}
+
+/* ---- Container ---- */
+.container {
+  width: min(var(--maxW), calc(100% - var(--sp-32)));
+  margin-inline: auto;
+  padding-top: var(--sp-24);
+  padding-bottom: var(--sp-48);
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Theme transition ---- */
+.theme-transitioning,
+.theme-transitioning * {
+  transition-duration: 0.35s !important;
+}

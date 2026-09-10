@@ -1,0 +1,114 @@
+/* ==========================================================================
+   Sidebar -- iOS-style Section List
+   ========================================================================== */
+
+.sidebar {
+  position: sticky;
+  top: calc(var(--navH) + var(--sp-24));
+  max-height: calc(100vh - var(--navH) - var(--sp-48));
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.sidebar::-webkit-scrollbar { display: none; }
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-2) var(--sp-12) var(--sp-8);
+}
+
+.sidebar-title {
+  font-size: var(--fs-footnote);
+  font-weight: 400;
+  color: var(--secondaryLabel);
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.sidebar-clear {
+  font-size: var(--fs-subhead);
+  font-weight: 400;
+  color: var(--systemBlue);
+  padding: var(--sp-4) var(--sp-8);
+  border-radius: var(--r-xs);
+}
+
+.sidebar-clear:active {
+  opacity: 0.5;
+}
+
+
+/* ---- Nav list (iOS grouped card) ---- */
+.sidebar-nav {
+  background: var(--secondaryBg);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadowCard);
+  overflow: hidden;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  width: 100%;
+  padding: var(--sp-10) var(--sp-12);
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: var(--label);
+  font-size: var(--fs-subhead);
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+/* Inset separator */
+.nav-item + .nav-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--sp-12);
+  right: 0;
+  height: 0.5px;
+  background: var(--separator);
+}
+
+.nav-item:hover {
+  background: var(--quaternaryFill);
+  color: var(--systemBlue);
+}
+
+.nav-item:active {
+  background: var(--separator);
+}
+
+.nav-item.active {
+  color: var(--systemBlue);
+  font-weight: 600;
+  background: var(--tint);
+}
+
+.nav-index {
+  width: 20px;
+  font-size: var(--fs-caption1);
+  font-weight: 600;
+  color: var(--secondaryLabel);
+  text-align: center;
+  flex-shrink: 0;
+  font-family: var(--font-rounded);
+}
+
+.nav-item.active .nav-index {
+  color: var(--systemBlue);
+}
+
+.nav-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

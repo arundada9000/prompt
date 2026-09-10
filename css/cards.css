@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Cards -- Section Cards, Option Tiles, Project Card
+   ========================================================================== */
+
+/* ---- Workspace Grid ---- */
+.workspace {
+  display: grid;
+  grid-template-columns: var(--sidebarW) minmax(0, 1fr) minmax(300px, var(--previewW));
+  gap: var(--sp-16);
+  align-items: start;
+}
+
+.builder {
+  display: grid;
+  gap: var(--sp-16);
+  min-width: 0;
+}
+
+
+/* ==========================================================================
+   Section Card
+   ========================================================================== */
+
+.section-card {
+  background: var(--secondaryBg);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadowCard);
+  padding: var(--sp-16);
+  transition: background var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+  /* Entrance animation */
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cardIn var(--dur-slow) var(--ease) forwards;
+}
+
+@keyframes cardIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-card:hover {
+  box-shadow: var(--shadowElevated);
+}
+
+
+/* ---- Card Header ---- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--sp-12);
+  margin-bottom: var(--sp-4);
+}
+
+.card-header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  min-width: 0;
+}
+
+.card-title {
+  font-size: var(--fs-headline);
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.card-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  flex-shrink: 0;
+}
+
+.card-desc {
+  font-size: var(--fs-footnote);
+  color: var(--secondaryLabel);
+  line-height: 1.45;
+  margin-bottom: var(--sp-12);
+}
+
+
+/* ==========================================================================
+   Option Tiles
+   ========================================================================== */
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-8);
+}
+
+.option {
+  position: relative;
+}
+
+.option-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.option-label {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: var(--sp-10);
+  align-items: start;
+  padding: var(--sp-12);
+  margin: 0;
+  min-height: 64px;
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-sm);
+  background: var(--systemBg);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+
+.option-label:hover {
+  border-color: var(--secondaryLabel);
+  background: color-mix(in srgb, var(--systemBg) 90%, var(--systemBlue) 10%);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transform: translateY(-1px);
+}
+
+.option-label:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+
+/* ---- Checkbox Circle ---- */
+.option-check {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--systemGray3);
+  border-radius: var(--r-full);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              transform var(--dur) var(--spring);
+}
+
+.option-check svg {
+  width: 12px;
+  height: 12px;
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset var(--dur) var(--ease);
+}
+
+.option-label:hover .option-check {
+  border-color: var(--systemBlue);
+}
+
+
+/* ---- Checked State ---- */
+.option-input:checked + .option-label {
+  background: var(--tint);
+  border-color: color-mix(in srgb, var(--systemBlue) 30%, transparent);
+}
+
+.option-input:checked + .option-label:hover {
+  background: var(--tintStrong);
+}
+
+.option-input:checked + .option-label .option-check {
+  background: var(--systemBlue);
+  border-color: var(--systemBlue);
+  transform: scale(1.08);
+}
+
+.option-input:checked + .option-label .option-check svg {
+  stroke-dashoffset: 0;
+}
+
+.option-input:focus-visible + .option-label {
+  outline: 3px solid rgba(0,122,255,0.4);
+  outline-offset: 1px;
+}
+
+
+/* ---- Text ---- */
+.option-title {
+  display: block;
+  font-size: var(--fs-footnote);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--label);
+}
+
+.option-desc {
+  display: block;
+  font-size: var(--fs-caption2);
+  color: var(--secondaryLabel);
+  line-height: 1.38;
+  margin-top: var(--sp-2);
+}
+
+
+/* ==========================================================================
+   Project Card
+   ========================================================================== */
+
+.project-card .fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-12);
+}
+
+.project-card .field-full {
+  grid-column: 1 / -1;
+}

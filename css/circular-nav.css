@@ -1,0 +1,132 @@
+/* ==========================================================================
+   Circular Infinite Swipeable Navigation -- Mobile Only
+   ========================================================================== */
+
+.circular-nav {
+  display: none; /* shown only on mobile via responsive.css */
+  position: sticky;
+  top: var(--navH);
+  z-index: 30;
+  background: var(--glassBar);
+  border-bottom: 0.5px solid var(--separator);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  overflow: hidden;
+  touch-action: pan-x;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+
+/* ---- Track: holds the visible items, translated by JS ---- */
+.cnav-track {
+  display: flex;
+  align-items: stretch;
+  will-change: transform;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.cnav-track.no-transition {
+  transition: none !important;
+}
+
+.cnav-track.dragging {
+  transition: none !important;
+}
+
+
+/* ---- Individual nav pill ---- */
+.cnav-item {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 4px;
+  min-height: 52px;
+  cursor: pointer;
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cnav-item-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--secondaryLabel);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.1px;
+  transition: color 0.25s ease, font-weight 0.25s ease;
+}
+
+.cnav-item-index {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--tertiaryLabel);
+  font-family: var(--font-rounded);
+  transition: color 0.25s ease;
+}
+
+
+/* ---- Active indicator ---- */
+.cnav-item::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--systemBlue);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.cnav-item.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.cnav-item.active .cnav-item-label {
+  color: var(--systemBlue);
+  font-weight: 700;
+}
+
+.cnav-item.active .cnav-item-index {
+  color: var(--systemBlue);
+}
+
+
+/* ---- Edge fade masks ---- */
+.circular-nav::before,
+.circular-nav::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 24px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.circular-nav::before {
+  left: 0;
+  background: linear-gradient(to right, var(--systemBg) 0%, transparent 100%);
+}
+
+:root[data-theme="dark"] .circular-nav::before {
+  background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 100%);
+}
+
+.circular-nav::after {
+  right: 0;
+  background: linear-gradient(to left, var(--systemBg) 0%, transparent 100%);
+}
+
+:root[data-theme="dark"] .circular-nav::after {
+  background: linear-gradient(to left, rgba(0,0,0,0.85) 0%, transparent 100%);
+}

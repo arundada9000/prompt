@@ -1,0 +1,66 @@
+/* ==========================================================================
+   iOS Grouped Inset Card System
+   The cornerstone of iOS visual design: white rounded sections
+   on a system gray background, with thin separators.
+   ========================================================================== */
+
+.ios-card {
+  background: var(--secondaryBg);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadowCard);
+  overflow: hidden;
+  transition: background var(--dur) var(--ease);
+}
+
+/* Thin separator between children */
+.ios-card > * + * {
+  border-top: 0.5px solid var(--separator);
+}
+
+/* ---- Section header (sits ABOVE the card, like iOS Settings) ---- */
+.ios-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: var(--sp-24) var(--sp-20) var(--sp-6) var(--sp-20);
+  font-size: var(--fs-footnote);
+  color: var(--secondaryLabel);
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  font-weight: 400;
+}
+
+.ios-section-header:first-child {
+  padding-top: var(--sp-8);
+}
+
+/* ---- Row (standard iOS list row) ---- */
+.ios-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  padding: var(--sp-12) var(--sp-16);
+  min-height: 44px;
+  background: var(--secondaryBg);
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.ios-row:active {
+  background: var(--separator);
+}
+
+/* ---- Inset separator variant (line doesn't touch left edge) ---- */
+.ios-card--inset > * + * {
+  border-top: none;
+  position: relative;
+}
+
+.ios-card--inset > * + *::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--sp-16);
+  right: 0;
+  height: 0.5px;
+  background: var(--separator);
+}

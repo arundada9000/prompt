@@ -1,0 +1,207 @@
+/* ==========================================================================
+   Preview Panel -- Clean & Compact
+   ========================================================================== */
+
+.preview {
+  position: sticky;
+  top: calc(var(--navH) + var(--sp-24));
+  max-height: calc(100vh - var(--navH) - var(--sp-48));
+  display: flex;
+  flex-direction: column;
+  background: var(--secondaryBg);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadowElevated);
+  overflow: hidden;
+  transition: background var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+
+
+/* ---- Grab Bar (mobile) ---- */
+.preview-grab {
+  display: none;
+  justify-content: center;
+  padding: var(--sp-8) 0 var(--sp-4);
+}
+
+.preview-grab::after {
+  content: "";
+  width: 36px;
+  height: 5px;
+  border-radius: var(--r-full);
+  background: var(--tertiaryLabel);
+}
+
+
+/* ---- Header ---- */
+.preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-12) var(--sp-16);
+  border-bottom: 0.5px solid var(--separator);
+  flex-shrink: 0;
+}
+
+.preview-header-left {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-8);
+  min-width: 0;
+}
+
+.preview-title {
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.2px;
+  white-space: nowrap;
+}
+
+.preview-chars {
+  font-size: var(--fs-caption2);
+  color: var(--tertiaryLabel);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.preview-header-actions {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: center;
+  flex-shrink: 0;
+}
+
+
+/* ---- Output (read-only pre) ---- */
+.preview-output {
+  flex: 1;
+  overflow: auto;
+  padding: var(--sp-16);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-caption1);
+  line-height: 1.6;
+  color: var(--label);
+  white-space: pre-wrap;
+  word-break: break-word;
+  scrollbar-width: thin;
+}
+
+.preview-output::-webkit-scrollbar { width: 3px; }
+.preview-output::-webkit-scrollbar-thumb {
+  background: var(--tertiaryLabel);
+  border-radius: var(--r-full);
+}
+
+
+/* ---- Editor (textarea for fullscreen editing) ---- */
+.preview-editor {
+  display: none;
+  flex: 1;
+  width: 100%;
+  padding: var(--sp-24) var(--sp-32);
+  margin: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--fs-subhead);
+  line-height: 1.7;
+  color: var(--label);
+  resize: none;
+  scrollbar-width: thin;
+}
+
+.preview-editor::-webkit-scrollbar { width: 4px; }
+.preview-editor::-webkit-scrollbar-thumb {
+  background: var(--tertiaryLabel);
+  border-radius: var(--r-full);
+}
+
+
+/* ==========================================================================
+   Fullscreen Mode
+   ========================================================================== */
+
+.preview-fullscreen-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: fadeIn var(--dur) var(--ease);
+}
+
+.preview-fullscreen-backdrop.visible {
+  display: block;
+}
+
+.preview.fullscreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(960px, calc(100vw - var(--sp-48)));
+  max-height: calc(100vh - var(--sp-48));
+  height: calc(100vh - var(--sp-48));
+  z-index: 100;
+  border-radius: var(--r-lg);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25), 0 0 1px rgba(0, 0, 0, 0.15);
+  animation: scaleIn var(--dur-slow) var(--spring);
+}
+
+.preview.fullscreen .preview-header {
+  padding: var(--sp-16) var(--sp-24);
+}
+
+.preview.fullscreen .preview-title {
+  font-size: var(--fs-headline);
+}
+
+.preview.fullscreen .preview-output {
+  display: none;
+}
+
+.preview.fullscreen .preview-editor {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+
+/* ==========================================================================
+   Mobile Sheet Overlay
+   ========================================================================== */
+
+.preview-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 59;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.preview-backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}

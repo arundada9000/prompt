@@ -1,0 +1,439 @@
+/* ==========================================================================
+   Components -- iOS Buttons, Controls, Toast, Form Fields
+   ========================================================================== */
+
+/* ---- SVG Icons ---- */
+.icon svg {
+  display: block;
+  fill: none;
+  stroke: currentColor;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-6);
+  height: 36px;
+  padding: 0 var(--sp-16);
+  border: none;
+  border-radius: var(--r-full);
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--dur-fast) var(--ease),
+              opacity var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease);
+}
+
+.btn:active {
+  opacity: 0.65;
+  transform: scale(0.97);
+}
+
+.btn svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* Filled (primary) */
+.btn--filled {
+  background: var(--systemBlue);
+  color: #fff;
+}
+
+.btn--filled:hover {
+  background: #0070e6;
+  box-shadow: 0 2px 12px rgba(0,122,255,0.3);
+}
+
+:root[data-theme="dark"] .btn--filled:hover {
+  background: #1a8eff;
+  box-shadow: 0 2px 12px rgba(10,132,255,0.35);
+}
+
+/* Tinted */
+.btn--tinted {
+  background: var(--tint);
+  color: var(--systemBlue);
+}
+
+.btn--tinted:hover {
+  background: var(--tintStrong);
+}
+
+/* Ghost */
+.btn--ghost {
+  background: var(--quaternaryFill);
+  color: var(--label);
+}
+
+.btn--ghost:hover {
+  background: var(--tertiaryFill);
+}
+
+/* Plain text */
+.btn--plain {
+  background: transparent;
+  color: var(--systemBlue);
+  padding: 0 var(--sp-8);
+  height: 32px;
+  font-weight: 400;
+}
+
+.btn--plain:hover {
+  background: var(--quaternaryFill);
+}
+
+.btn--full { width: 100%; }
+
+.btn--lg {
+  height: 50px;
+  border-radius: var(--r-md);
+  font-size: var(--fs-body);
+  font-weight: 600;
+}
+
+
+/* ==========================================================================
+   Icon Button
+   ========================================================================== */
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--quaternaryFill);
+  color: var(--label);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              opacity var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.icon-btn:hover {
+  background: var(--tertiaryFill);
+}
+
+.icon-btn:active {
+  opacity: 0.5;
+  transform: scale(0.9);
+}
+
+
+/* ==========================================================================
+   Pills
+   ========================================================================== */
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-10);
+  border-radius: var(--r-full);
+  font-size: var(--fs-caption1);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+.pill--accent {
+  background: var(--tint);
+  color: var(--systemBlue);
+}
+
+.pill--muted {
+  background: var(--quaternaryFill);
+  color: var(--secondaryLabel);
+}
+
+.pill--required {
+  background: var(--tint);
+  color: var(--systemBlue);
+  font-weight: 600;
+}
+
+
+/* ==========================================================================
+   Toast
+   ========================================================================== */
+
+.toast {
+  position: fixed;
+  top: calc(var(--navH) + var(--sp-12));
+  left: 50%;
+  z-index: 200;
+  transform: translate(-50%, -16px);
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+  padding: var(--sp-10) var(--sp-20);
+  background: var(--elevatedBg);
+  border-radius: var(--r-full);
+  box-shadow: var(--shadowFloat);
+  font-size: var(--fs-subhead);
+  font-weight: 500;
+  color: var(--label);
+  transition: opacity var(--dur) var(--ease),
+              transform var(--dur-slow) var(--spring);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+
+/* ==========================================================================
+   Form Controls
+   ========================================================================== */
+
+.form-field {
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.form-label {
+  font-size: var(--fs-footnote);
+  font-weight: 400;
+  color: var(--secondaryLabel);
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+  padding-left: var(--sp-4);
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--sp-10) var(--sp-12);
+  background: var(--secondaryBg);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-sm);
+  color: var(--label);
+  font-size: var(--fs-body);
+  line-height: 1.4;
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--tertiaryLabel);
+}
+
+.form-input:hover,
+.form-textarea:hover,
+.form-select:hover {
+  border-color: var(--secondaryLabel);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  border-color: var(--systemBlue);
+  box-shadow: 0 0 0 3.5px rgba(0,122,255,0.15);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%238E8E93' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-12) center;
+  padding-right: var(--sp-32);
+  cursor: pointer;
+}
+
+.form-select:hover {
+  border-color: var(--secondaryLabel);
+}
+
+
+/* ==========================================================================
+   Kicker
+   ========================================================================== */
+
+.kicker {
+  font-size: var(--fs-caption2);
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--secondaryLabel);
+}
+
+
+/* ==========================================================================
+   Section Number (clean inline text, not a badge)
+   ========================================================================== */
+
+.section-num {
+  font-size: var(--fs-subhead);
+  font-weight: 700;
+  color: var(--systemBlue);
+  font-family: var(--font-rounded);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+  min-width: 24px;
+}
+
+
+/* ==========================================================================
+   Select All Button (per section)
+   ========================================================================== */
+
+.select-all-btn {
+  font-size: var(--fs-subhead);
+  font-weight: 400;
+  color: var(--systemBlue);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--sp-4) var(--sp-8);
+  border-radius: var(--r-xs);
+  transition: background var(--dur-fast) var(--ease);
+  white-space: nowrap;
+}
+
+.select-all-btn:hover {
+  background: var(--tint);
+}
+
+.select-all-btn:active {
+  opacity: 0.5;
+}
+
+
+/* ==========================================================================
+   Search Bar
+   ========================================================================== */
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--sp-16);
+}
+
+.search-bar-icon {
+  position: absolute;
+  left: var(--sp-12);
+  color: var(--secondaryLabel);
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.search-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--sp-40) 0 var(--sp-40);
+  background: var(--secondaryBg);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-body);
+  color: var(--label);
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease);
+}
+
+.search-input::placeholder {
+  color: var(--tertiaryLabel);
+}
+
+.search-input:hover {
+  border-color: var(--secondaryLabel);
+}
+
+.search-input:focus {
+  border-color: var(--systemBlue);
+  box-shadow: 0 0 0 3.5px rgba(0,122,255,0.12);
+}
+
+/* Clear the native search cancel button styling */
+.search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%238E8E93'%3E%3Cpath d='M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z'/%3E%3C/svg%3E") center no-repeat;
+  cursor: pointer;
+}
+
+.search-shortcut {
+  position: absolute;
+  right: var(--sp-10);
+  padding: var(--sp-2) var(--sp-6);
+  background: var(--quaternaryFill);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-xs);
+  font-size: var(--fs-caption2);
+  font-family: var(--font-system);
+  color: var(--tertiaryLabel);
+  pointer-events: none;
+  line-height: 1.4;
+}
+
+.search-input:focus ~ .search-shortcut {
+  display: none;
+}
+
+
+/* ==========================================================================
+   Search Filtering -- Hide/Show States
+   ========================================================================== */
+
+.option.search-hidden {
+  display: none;
+}
+
+.section-card.search-hidden {
+  display: none;
+}
+
+.option-title mark,
+.option-desc mark {
+  background: rgba(255, 204, 0, 0.35);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.search-no-results {
+  text-align: center;
+  padding: var(--sp-40) var(--sp-16);
+  color: var(--secondaryLabel);
+  font-size: var(--fs-subhead);
+}
+
+.search-no-results strong {
+  display: block;
+  font-size: var(--fs-title3);
+  color: var(--label);
+  margin-bottom: var(--sp-4);
+}
+

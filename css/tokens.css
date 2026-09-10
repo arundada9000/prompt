@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Design Tokens -- True iOS System Design Language
+   ========================================================================== */
+
+:root {
+  /* ---- iOS System Backgrounds ---- */
+  --systemBg: #F2F2F7;
+  --secondaryBg: #FFFFFF;
+  --tertiaryBg: #F2F2F7;
+  --groupedBg: #F2F2F7;
+  --elevatedBg: #FFFFFF;
+
+  /* ---- iOS Labels ---- */
+  --label: #000000;
+  --secondaryLabel: #8E8E93;
+  --tertiaryLabel: #C7C7CC;
+  --quaternaryLabel: #D1D1D6;
+
+  /* ---- iOS Fills ---- */
+  --systemFill: rgba(120, 120, 128, 0.20);
+  --secondaryFill: rgba(120, 120, 128, 0.16);
+  --tertiaryFill: rgba(120, 120, 128, 0.12);
+  --quaternaryFill: rgba(120, 120, 128, 0.08);
+
+  /* ---- iOS Separators ---- */
+  --separator: rgba(60, 60, 67, 0.09);
+  --separatorOpaque: #C6C6C8;
+
+  /* ---- iOS System Colors ---- */
+  --systemBlue: #007AFF;
+  --systemGreen: #34C759;
+  --systemIndigo: #5856D6;
+  --systemOrange: #FF9500;
+  --systemPink: #FF2D55;
+  --systemPurple: #AF52DE;
+  --systemRed: #FF3B30;
+  --systemTeal: #5AC8FA;
+  --systemYellow: #FFCC00;
+  --systemGray: #8E8E93;
+  --systemGray2: #AEAEB2;
+  --systemGray3: #C7C7CC;
+  --systemGray4: #D1D1D6;
+  --systemGray5: #E5E5EA;
+  --systemGray6: #F2F2F7;
+
+  /* ---- Accent ---- */
+  --tint: rgba(0, 122, 255, 0.10);
+  --tintStrong: rgba(0, 122, 255, 0.18);
+
+  /* ---- Glass (iOS nav/tab bars) ---- */
+  --glassBar: rgba(249, 249, 249, 0.94);
+  --glassBorder: rgba(0, 0, 0, 0.04);
+  --glassBlur: blur(20px) saturate(180%);
+
+  /* ---- Shadows ---- */
+  --shadowCard: 0 0.5px 0 rgba(0,0,0,0.04), 0 0 0 0.5px rgba(0,0,0,0.04);
+  --shadowElevated: 0 2px 10px rgba(0,0,0,0.06), 0 0 1px rgba(0,0,0,0.08);
+  --shadowSheet: 0 -2px 24px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.12);
+  --shadowFloat: 0 8px 32px rgba(0,0,0,0.12), 0 0 1px rgba(0,0,0,0.08);
+
+  /* ---- Typography ---- */
+  --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "SF Pro Text", "Helvetica Neue", "Segoe UI", system-ui,
+                 sans-serif;
+  --font-rounded: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont,
+                  system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* iOS Type Scale */
+  --fs-largeTitle: 34px;
+  --fs-title1: 28px;
+  --fs-title2: 22px;
+  --fs-title3: 20px;
+  --fs-headline: 17px;
+  --fs-body: 17px;
+  --fs-callout: 16px;
+  --fs-subhead: 15px;
+  --fs-footnote: 13px;
+  --fs-caption1: 12px;
+  --fs-caption2: 11px;
+
+  /* ---- Spacing (iOS uses 8pt base with common values) ---- */
+  --sp-2: 2px;
+  --sp-4: 4px;
+  --sp-6: 6px;
+  --sp-8: 8px;
+  --sp-10: 10px;
+  --sp-12: 12px;
+  --sp-16: 16px;
+  --sp-20: 20px;
+  --sp-24: 24px;
+  --sp-32: 32px;
+  --sp-40: 40px;
+  --sp-48: 48px;
+
+  /* ---- Radii (iOS standard) ---- */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 13px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-full: 999px;
+
+  /* ---- Timing ---- */
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 0.18s;
+  --dur: 0.28s;
+  --dur-slow: 0.42s;
+
+  /* ---- Layout ---- */
+  --navH: 52px;
+  --sidebarW: 210px;
+  --previewW: 380px;
+  --maxW: 1400px;
+  --inset: clamp(16px, 4vw, 48px);
+}
+
+
+/* ==========================================================================
+   Dark Mode -- True iOS Dark
+   ========================================================================== */
+
+:root[data-theme="dark"] {
+  --systemBg: #000000;
+  --secondaryBg: #1C1C1E;
+  --tertiaryBg: #2C2C2E;
+  --groupedBg: #000000;
+  --elevatedBg: #1C1C1E;
+
+  --label: #FFFFFF;
+  --secondaryLabel: #98989D;
+  --tertiaryLabel: #48484A;
+  --quaternaryLabel: #3A3A3C;
+
+  --systemFill: rgba(120, 120, 128, 0.36);
+  --secondaryFill: rgba(120, 120, 128, 0.32);
+  --tertiaryFill: rgba(120, 120, 128, 0.24);
+  --quaternaryFill: rgba(120, 120, 128, 0.18);
+
+  --separator: rgba(84, 84, 88, 0.36);
+  --separatorOpaque: #38383A;
+
+  --systemBlue: #0A84FF;
+  --systemGreen: #30D158;
+  --systemIndigo: #5E5CE6;
+  --systemOrange: #FF9F0A;
+  --systemPink: #FF375F;
+  --systemPurple: #BF5AF2;
+  --systemRed: #FF453A;
+  --systemTeal: #64D2FF;
+  --systemYellow: #FFD60A;
+  --systemGray: #98989D;
+  --systemGray2: #636366;
+  --systemGray3: #48484A;
+  --systemGray4: #3A3A3C;
+  --systemGray5: #2C2C2E;
+  --systemGray6: #1C1C1E;
+
+  --tint: rgba(10, 132, 255, 0.16);
+  --tintStrong: rgba(10, 132, 255, 0.28);
+
+  --glassBar: rgba(30, 30, 30, 0.90);
+  --glassBorder: rgba(255, 255, 255, 0.06);
+
+  --shadowCard: 0 0.5px 0 rgba(255,255,255,0.02), 0 0 0 0.5px rgba(255,255,255,0.04);
+  --shadowElevated: 0 2px 10px rgba(0,0,0,0.3), 0 0 1px rgba(0,0,0,0.3);
+  --shadowSheet: 0 -2px 24px rgba(0,0,0,0.5), 0 0 1px rgba(0,0,0,0.4);
+  --shadowFloat: 0 8px 32px rgba(0,0,0,0.45), 0 0 1px rgba(0,0,0,0.3);
+}

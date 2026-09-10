@@ -1,0 +1,84 @@
+/* ==========================================================================
+   iOS Navigation Bar
+   Translucent blur bar with system-standard height and layout
+   ========================================================================== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-12);
+  height: var(--navH);
+  padding: 0 var(--inset);
+  background: var(--glassBar);
+  border-bottom: 0.5px solid var(--separator);
+  backdrop-filter: var(--glassBlur);
+  -webkit-backdrop-filter: var(--glassBlur);
+  transition: background var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+
+/* ---- Brand ---- */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-10);
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--systemBlue);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.navbar-logo svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: none;
+}
+
+.navbar-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.navbar-title strong {
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+}
+
+.navbar-title small {
+  font-size: var(--fs-caption2);
+  color: var(--secondaryLabel);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+/* ---- Actions ---- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+}
+
+/* Theme icon swap */
+.theme-icon--light,
+.theme-icon--dark { display: none; }
+:root:not([data-theme="dark"]) .theme-icon--light { display: block; }
+:root[data-theme="dark"] .theme-icon--dark { display: block; }
+
+.navbar .preview-toggle { display: none; }
