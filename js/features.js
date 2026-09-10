@@ -2,14 +2,24 @@
  * FEATURES -- Section definitions for the prompt builder.
  *
  * Each section has:
- *   id    -- unique section identifier
- *   title -- display name
- *   desc  -- short description
- *   radio -- (optional) true if items are mutually exclusive
- *   items -- array of [itemId, itemTitle, itemDescription]
+ *   id        -- unique section identifier
+ *   title     -- display name
+ *   desc      -- short description
+ *   radio     -- (optional) true if items are mutually exclusive
+ *   showWhen  -- (optional) { field, values } for conditional visibility
+ *   items     -- array of items (see formats below)
+ *
+ * Item formats:
+ *   Checkbox: ["id", "Title", "Description"]
+ *   Dropdown: { id, type:"dropdown", title, placeholder, options:[[value,label,desc],...] }
+ *   Text:     { id, type:"text", title, placeholder }
  */
 
 const FEATURES = [
+
+  /* ========================================================================
+     1. Project quality
+     ======================================================================== */
   {
     id: "quality",
     title: "Project quality",
@@ -42,6 +52,10 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     2. Design system
+     ======================================================================== */
   {
     id: "design",
     title: "Design system",
@@ -74,6 +88,103 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     3. Tech stack
+     ======================================================================== */
+  {
+    id: "techstack",
+    title: "Tech stack",
+    desc: "Define the exact technologies, frameworks, and tooling for the project.",
+    items: [
+      {
+        id: "framework",
+        type: "dropdown",
+        title: "Framework",
+        placeholder: "Select a framework",
+        options: [
+          ["react", "React", "A declarative, component-based library for building user interfaces."],
+          ["vue", "Vue", "A progressive framework for building UIs with a reactive data model."],
+          ["svelte", "Svelte", "A compile-time framework that shifts work to the build step for minimal runtime."],
+          ["angular", "Angular", "A platform for building mobile and desktop apps with TypeScript."],
+          ["next", "Next.js", "A React framework for production with server rendering, routing, and API routes."],
+          ["nuxt", "Nuxt", "A Vue framework for production with server rendering, routing, and auto-imports."],
+          ["astro", "Astro", "A web framework for content-driven sites with island architecture."],
+          ["vanilla", "Vanilla JS", "No framework. Use plain JavaScript with Web APIs."]
+        ]
+      },
+      {
+        id: "language",
+        type: "dropdown",
+        title: "Language",
+        placeholder: "Select a language",
+        options: [
+          ["typescript", "TypeScript", "A typed superset of JavaScript that catches errors at compile time."],
+          ["javascript", "JavaScript", "The standard language of the web. No type annotations."]
+        ]
+      },
+      {
+        id: "styling",
+        type: "dropdown",
+        title: "Styling approach",
+        placeholder: "Select a styling approach",
+        options: [
+          ["tailwind", "Tailwind CSS", "A utility-first CSS framework for rapid UI development."],
+          ["css-modules", "CSS Modules", "Locally scoped CSS classes imported as modules to avoid naming conflicts."],
+          ["styled-components", "Styled Components", "CSS-in-JS using tagged template literals for component-scoped styles."],
+          ["sass", "Sass / SCSS", "A CSS preprocessor with variables, nesting, mixins, and functions."],
+          ["vanilla-css", "Vanilla CSS", "Plain CSS with custom properties and modern layout techniques."],
+          ["less", "Less", "A CSS preprocessor with variables, mixins, and functions."]
+        ]
+      },
+      {
+        id: "state-mgmt",
+        type: "dropdown",
+        title: "State management",
+        placeholder: "Select state management",
+        options: [
+          ["zustand", "Zustand", "A small, fast, hook-based state manager for React."],
+          ["jotai", "Jotai", "An atomic state management approach for React."],
+          ["redux-toolkit", "Redux Toolkit", "The official, opinionated toolset for Redux state management."],
+          ["pinia", "Pinia", "The official, type-safe store for Vue."],
+          ["vuex", "Vuex", "A centralized state management for Vue applications."],
+          ["context-api", "Context API", "Built-in React context for lightweight state sharing."],
+          ["signals", "Signals", "Fine-grained reactive primitives (framework-dependent)."],
+          ["none", "None", "No external state management. Use local component state."]
+        ]
+      },
+      {
+        id: "pkg-manager",
+        type: "dropdown",
+        title: "Package manager",
+        placeholder: "Select a package manager",
+        options: [
+          ["npm", "npm", "The default Node.js package manager."],
+          ["yarn", "Yarn", "A fast, reliable, and secure dependency management tool."],
+          ["pnpm", "pnpm", "A fast, disk-space-efficient package manager using hard links."],
+          ["bun", "Bun", "A fast JavaScript runtime and package manager."]
+        ]
+      },
+      {
+        id: "build-tool",
+        type: "dropdown",
+        title: "Build tool",
+        placeholder: "Select a build tool",
+        options: [
+          ["vite", "Vite", "A fast development server and build tool with native ES module support."],
+          ["webpack", "Webpack", "A static module bundler for modern JavaScript applications."],
+          ["turbopack", "Turbopack", "An incremental bundler optimized for JavaScript and TypeScript."],
+          ["esbuild", "esbuild", "An extremely fast JavaScript and CSS bundler and minifier."],
+          ["rollup", "Rollup", "A module bundler for JavaScript that compiles small pieces of code."],
+          ["parcel", "Parcel", "A zero-configuration build tool for the web."]
+        ]
+      }
+    ]
+  },
+
+  /* ========================================================================
+     4. Interaction
+     ======================================================================== */
   {
     id: "interaction",
     title: "Interaction",
@@ -106,6 +217,10 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     5. Responsiveness & accessibility
+     ======================================================================== */
   {
     id: "responsive",
     title: "Responsiveness & accessibility",
@@ -138,6 +253,10 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     6. Themes
+     ======================================================================== */
   {
     id: "themes",
     title: "Themes",
@@ -165,6 +284,10 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     7. Pages & states
+     ======================================================================== */
   {
     id: "states",
     title: "Pages & states",
@@ -197,10 +320,154 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     8. Security
+     ======================================================================== */
+  {
+    id: "security",
+    title: "Security",
+    desc: "Protect the application and its users from common vulnerabilities.",
+    items: [
+      [
+        "input-validation",
+        "Input validation and sanitization",
+        "Validate and sanitize all user input on both client and server. Never trust client-side data. Use schema validation libraries where appropriate."
+      ],
+      [
+        "xss",
+        "XSS protection",
+        "Prevent cross-site scripting by escaping output, using safe APIs, and applying Content Security Policy headers."
+      ],
+      [
+        "csrf",
+        "CSRF protection",
+        "Implement anti-CSRF tokens for state-changing operations. Use SameSite cookies and verify request origins."
+      ],
+      [
+        "csp",
+        "Content Security Policy",
+        "Define and enforce a strict Content Security Policy to restrict resource loading and prevent code injection."
+      ],
+      [
+        "auth-patterns",
+        "Secure authentication patterns",
+        "Use proven authentication libraries. Hash passwords with bcrypt or argon2. Implement secure session management with HttpOnly, Secure, SameSite cookies."
+      ],
+      [
+        "env-vars",
+        "Environment variable handling",
+        "Never hardcode secrets, API keys, or credentials. Load configuration from environment variables. Validate required variables at startup."
+      ],
+      [
+        "rate-limit",
+        "Rate limiting",
+        "Implement rate limiting on API endpoints and sensitive operations to prevent abuse, brute-force attacks, and resource exhaustion."
+      ],
+      [
+        "https",
+        "HTTPS enforcement",
+        "Enforce HTTPS for all traffic. Set HSTS headers. Redirect HTTP to HTTPS."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     9. Testing
+     ======================================================================== */
+  {
+    id: "testing",
+    title: "Testing",
+    desc: "Write tests that catch regressions and document expected behavior.",
+    items: [
+      [
+        "unit-tests",
+        "Unit tests",
+        "Write unit tests for individual functions, utilities, and components. Aim for meaningful coverage of business logic, not arbitrary percentages."
+      ],
+      [
+        "integration-tests",
+        "Integration tests",
+        "Write integration tests that verify modules work together correctly, including data flow, API calls, and component interactions."
+      ],
+      [
+        "e2e-tests",
+        "End-to-end tests",
+        "Write E2E tests that simulate real user workflows in a browser environment. Cover critical user journeys from start to finish."
+      ],
+      [
+        "visual-regression",
+        "Visual regression testing",
+        "Capture and compare screenshots of key UI states to detect unintended visual changes."
+      ],
+      [
+        "a11y-testing",
+        "Accessibility testing",
+        "Run automated accessibility audits (axe-core, Lighthouse) and include manual keyboard/screen-reader testing for critical flows."
+      ],
+      [
+        "coverage",
+        "Test coverage reporting",
+        "Generate and review test coverage reports. Focus coverage on critical paths, edge cases, and error handling."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     10. Performance
+     ======================================================================== */
+  {
+    id: "performance",
+    title: "Performance",
+    desc: "Optimize for speed, efficiency, and a smooth user experience.",
+    items: [
+      [
+        "core-vitals",
+        "Core Web Vitals targets",
+        "Optimize for LCP under 2.5s, FID under 100ms, and CLS under 0.1. Measure and monitor these metrics."
+      ],
+      [
+        "image-opt",
+        "Image optimization",
+        "Use modern formats (WebP, AVIF), responsive srcset, lazy loading, and proper sizing. Avoid serving oversized images."
+      ],
+      [
+        "code-split",
+        "Code splitting and lazy loading",
+        "Split code at route boundaries and lazy-load non-critical modules, components, and assets."
+      ],
+      [
+        "caching",
+        "Caching strategies",
+        "Implement appropriate caching headers, service worker caching, and client-side caching to minimize redundant network requests."
+      ],
+      [
+        "bundle-size",
+        "Bundle size awareness",
+        "Keep bundle size minimal. Audit dependencies, tree-shake unused code, and set size budgets."
+      ],
+      [
+        "font-opt",
+        "Font optimization",
+        "Use font-display: swap, subset fonts to needed character ranges, preload critical fonts, and limit the number of font families and weights."
+      ],
+      {
+        id: "perf-custom",
+        type: "text",
+        title: "Custom performance requirements",
+        placeholder: "e.g. Lighthouse score above 95, first contentful paint under 1s..."
+      }
+    ]
+  },
+
+  /* ========================================================================
+     11. PWA
+     ======================================================================== */
   {
     id: "pwa",
     title: "PWA",
     desc: "Progressive Web App capabilities.",
+    showWhen: { field: "projectType", values: ["PWA", "Web application", "SaaS", "E-commerce", "Dashboard"] },
     items: [
       [
         "pwa",
@@ -229,6 +496,56 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     12. Data & API layer
+     ======================================================================== */
+  {
+    id: "data-api",
+    title: "Data & API layer",
+    desc: "Define how data flows between the client and server.",
+    items: [
+      [
+        "rest",
+        "REST API",
+        "Design a clean, resource-oriented REST API with proper HTTP methods, status codes, and consistent URL patterns."
+      ],
+      [
+        "graphql",
+        "GraphQL",
+        "Implement a GraphQL API with a well-designed schema, resolvers, and appropriate query optimization (N+1 prevention, dataloader)."
+      ],
+      [
+        "trpc",
+        "tRPC",
+        "Use tRPC for end-to-end typesafe APIs between client and server without code generation."
+      ],
+      [
+        "mock-data",
+        "Mock data and API simulation",
+        "Provide realistic mock data and API simulation for development and testing. Use fixtures or MSW."
+      ],
+      [
+        "pagination",
+        "Pagination patterns",
+        "Implement consistent pagination (cursor-based or offset) with proper loading states and infinite scroll or page navigation."
+      ],
+      [
+        "error-handling",
+        "API error handling",
+        "Handle API errors consistently with typed error responses, retry logic, user-friendly messages, and proper HTTP status codes."
+      ],
+      [
+        "validation",
+        "Data validation with Zod / Yup",
+        "Validate all data at system boundaries using a schema validation library. Define shared schemas for API requests, responses, and form data."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     13. SEO / AEO / GEO
+     ======================================================================== */
   {
     id: "discoverability",
     title: "SEO / AEO / GEO",
@@ -266,6 +583,10 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     14. GitHub & documentation
+     ======================================================================== */
   {
     id: "github",
     title: "GitHub & documentation",
@@ -298,41 +619,118 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     15. Keyboard shortcuts
+     ======================================================================== */
   {
-    id: "license",
-    title: "License & ownership",
-    desc: "Choose the project licensing model.",
-    radio: true,
+    id: "shortcuts",
+    title: "Keyboard shortcuts",
+    desc: "Power users should be able to navigate and act without touching the mouse.",
     items: [
       [
-        "mit",
-        "MIT License",
-        "Use a standard MIT LICENSE file."
+        "app-shortcuts",
+        "Application keyboard shortcuts",
+        "Define keyboard shortcuts for the most common actions. Use standard modifier keys (Ctrl/Cmd) and avoid conflicts with browser defaults."
       ],
       [
-        "custom-license",
-        "Custom proprietary license",
-        "Everything is licensed exclusively to me. No one may use, copy, modify, distribute, or otherwise use this project without my explicit permission."
+        "command-palette",
+        "Command palette",
+        "Implement a command palette (Ctrl/Cmd+K or Ctrl/Cmd+Shift+P) that provides quick access to all major features and navigation."
+      ],
+      [
+        "custom-bindings",
+        "Customizable keybindings",
+        "Allow users to view and optionally customize keyboard shortcut assignments."
+      ],
+      [
+        "shortcut-docs",
+        "Shortcut documentation",
+        "Include a shortcut reference (help modal or settings panel) listing all available shortcuts."
       ]
     ]
   },
+
+  /* ========================================================================
+     16. Deployment
+     ======================================================================== */
   {
-    id: "developer",
-    title: "Developer attribution",
-    desc: "Use the developer profile when appropriate.",
+    id: "deployment",
+    title: "Deployment",
+    desc: "Define where and how the application is deployed.",
     items: [
       [
-        "profile",
-        "Use developer profile",
-        "Read relevant information from C:\\Users\\arunn\\Desktop\\ARUN-PROFILE.md and use only appropriate information."
+        "vercel",
+        "Vercel",
+        "Deploy to Vercel with appropriate configuration for serverless functions, edge middleware, and preview deployments."
       ],
       [
-        "watermark",
-        "Developer watermark",
-        "Add tasteful developer attribution where appropriate without damaging the UI or exposing unnecessary private information."
+        "netlify",
+        "Netlify",
+        "Deploy to Netlify with forms, functions, and split testing configured as needed."
+      ],
+      [
+        "aws",
+        "AWS",
+        "Deploy to AWS using appropriate services (S3 + CloudFront, ECS, Lambda, etc.) with infrastructure-as-code."
+      ],
+      [
+        "docker",
+        "Docker",
+        "Containerize the application with a multi-stage Dockerfile, optimized image size, and docker-compose for local development."
+      ],
+      [
+        "cloudflare",
+        "Cloudflare Pages / Workers",
+        "Deploy to Cloudflare's edge network with Workers for serverless compute and Pages for static hosting."
+      ],
+      [
+        "static",
+        "Static hosting",
+        "Build as static files and deploy to any static host (GitHub Pages, Surge, etc.)."
       ]
     ]
   },
+
+  /* ========================================================================
+     17. CI/CD & tooling
+     ======================================================================== */
+  {
+    id: "cicd",
+    title: "CI/CD & tooling",
+    desc: "Automate quality checks and deployment pipelines.",
+    items: [
+      [
+        "github-actions",
+        "GitHub Actions workflows",
+        "Set up GitHub Actions for automated testing, linting, building, and deployment on push/PR."
+      ],
+      [
+        "lint-format",
+        "Linting and formatting",
+        "Configure ESLint (or equivalent) and Prettier with project-specific rules. Enforce consistent code style."
+      ],
+      [
+        "pre-commit",
+        "Pre-commit hooks",
+        "Use Husky and lint-staged to run linting, formatting, and type checks on staged files before commit."
+      ],
+      [
+        "auto-test",
+        "Automated testing in CI",
+        "Run the full test suite (unit, integration, E2E) in CI on every push and pull request."
+      ],
+      [
+        "docker-ci",
+        "Docker in CI",
+        "Build and test Docker images in CI. Push to a container registry on successful builds."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     18. Visual documentation
+     ======================================================================== */
   {
     id: "visual",
     title: "Visual documentation",
@@ -360,6 +758,53 @@ const FEATURES = [
       ]
     ]
   },
+
+  /* ========================================================================
+     19. License & ownership
+     ======================================================================== */
+  {
+    id: "license",
+    title: "License & ownership",
+    desc: "Choose the project licensing model.",
+    radio: true,
+    items: [
+      [
+        "mit",
+        "MIT License",
+        "Use a standard MIT LICENSE file."
+      ],
+      [
+        "custom-license",
+        "Custom proprietary license",
+        "Everything is licensed exclusively to me. No one may use, copy, modify, distribute, or otherwise use this project without my explicit permission."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     20. Developer attribution
+     ======================================================================== */
+  {
+    id: "developer",
+    title: "Developer attribution",
+    desc: "Use the developer profile when appropriate.",
+    items: [
+      [
+        "profile",
+        "Use developer profile",
+        "Read relevant information from C:\\Users\\arunn\\Desktop\\ARUN-PROFILE.md and use only appropriate information."
+      ],
+      [
+        "watermark",
+        "Developer watermark",
+        "Add tasteful developer attribution where appropriate without damaging the UI or exposing unnecessary private information."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     21. Global instructions
+     ======================================================================== */
   {
     id: "global",
     title: "Global instructions",

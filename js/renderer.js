@@ -3,6 +3,7 @@
  *
  * Builds all dynamic DOM elements: section cards, sidebar navigation,
  * and updates stats/pills. Uses the FEATURES data and State module.
+ * Supports checkboxes, dropdowns, and text inputs.
  */
 
 const Renderer = (() => {
@@ -10,8 +11,99 @@ const Renderer = (() => {
    * Escape HTML special characters.
    */
   function esc(str) {
+    if (!str) return "";
     const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" };
     return str.replace(/[&<>"']/g, (c) => map[c]);
+  }
+
+  /**
+   * Check if a section should be visible given current project type.
+   */
+  function isSectionVisible(section) {
+    if (!section.showWhen) return true;
+    const val = document.getElementById("projectType")?.value || "";
+    return section.showWhen.values.includes(val);
+  }
+
+  /**
+   * Render a checkbox item tile.
+   */
+  function renderCheckboxItem(id, title, desc, section) {
+    const inputType = section.radio ? "radio" : "checkbox";
+    return `
+      <div class="option">
+        <input
+          class="option-input"
+          id="f-${id}"
+          type="${inputType}"
+          name="${section.radio ? section.id : id}"
+          value="${id}"
+          ${State.has(id) ? "checked" : ""}
+        >
+        <label class="option-label" for="f-${id}">
+          <span class="option-check">
+            <svg><use href="icons/icons.svg#icon-check"/></svg>
+          </span>
+          <span>
+            <span class="option-title">${esc(title)}</span>
+            <span class="option-desc">${esc(desc)}</span>
+          </span>
+        </label>
+      </div>
+    `;
+  }
+
+  /**
+   * Render a dropdown item.
+   */
+  function renderDropdownItem(item) {
+    const current = State.getDropdown(item.id);
+    const optionsHtml = item.options
+      .map(([value, label, desc]) => {
+        const sel = current === value ? "selected" : "";
+        return `<option value="${esc(value)}" ${sel} title="${esc(desc)}">${esc(label)}</option>`;
+      })
+      .join("");
+
+    return `
+      <div class="option option--dropdown">
+        <label class="option-dropdown-label" for="f-${item.id}">
+          <span class="option-title">${esc(item.title)}</span>
+        </label>
+        <select
+          class="form-select option-dropdown-select"
+          id="f-${item.id}"
+          data-dropdown="${item.id}"
+        >
+          <option value="">${esc(item.placeholder || "Select...")}</option>
+          ${optionsHtml}
+        </select>
+        ${current ? `<span class="option-dropdown-desc">${esc(
+          (item.options.find(([v]) => v === current) || [])[2] || ""
+        )}</span>` : ""}
+      </div>
+    `;
+  }
+
+  /**
+   * Render a text input item.
+   */
+  function renderTextItem(item) {
+    const current = State.getText(item.id);
+    return `
+      <div class="option option--text">
+        <label class="option-text-label" for="f-${item.id}">
+          <span class="option-title">${esc(item.title)}</span>
+        </label>
+        <textarea
+          class="form-textarea option-textarea"
+          id="f-${item.id}"
+          data-text="${item.id}"
+          rows="2"
+          placeholder="${esc(item.placeholder || "Type here...")}"
+        >${esc(current)}</textarea>
+      </div>
+    `;
   }
 
   /**
@@ -21,15 +113,27 @@ const Renderer = (() => {
     container.innerHTML = "";
 
     FEATURES.forEach((section, index) => {
+      const visible = isSectionVisible(section);
       const card = document.createElement("article");
-      card.className = "section-card";
+      card.className = `section-card${visible ? "" : " section-card--hidden"}`;
       card.id = `s-${section.id}`;
       card.style.animationDelay = `${index * 0.05}s`;
 
-      const inputType = section.radio ? "radio" : "checkbox";
-      const allCount = section.items.length;
+      const checkboxItems = section.items.filter((item) => Array.isArray(item));
+      const allCount = checkboxItems.length;
       const selectedCount = State.countInSection(section);
-      const allSelected = selectedCount === allCount;
+      const allSelected = allCount > 0 && selectedCount === allCount;
+
+      let itemsHtml = "";
+      section.items.forEach((item) => {
+        if (Array.isArray(item)) {
+          itemsHtml += renderCheckboxItem(item[0], item[1], item[2], section);
+        } else if (item.type === "dropdown") {
+          itemsHtml += renderDropdownItem(item);
+        } else if (item.type === "text") {
+          itemsHtml += renderTextItem(item);
+        }
+      });
 
       card.innerHTML = `
         <div class="card-header">
@@ -38,44 +142,20 @@ const Renderer = (() => {
             <h2 class="card-title">${esc(section.title)}</h2>
           </div>
           <div class="card-header-right">
-            <span class="pill ${selectedCount > 0 ? 'pill--accent' : 'pill--muted'}" id="pill-${section.id}">${selectedCount}/${allCount}</span>
-            ${!section.radio ? `<button class="select-all-btn" data-section="${section.id}">${allSelected ? 'Deselect all' : 'Select all'}</button>` : ''}
+            <span class="pill ${selectedCount > 0 ? "pill--accent" : "pill--muted"}" id="pill-${section.id}">${selectedCount}/${section.items.length}</span>
+            ${!section.radio && allCount > 0 ? `<button class="select-all-btn" data-section="${section.id}">${allSelected ? "Deselect all" : "Select all"}</button>` : ""}
           </div>
         </div>
         <p class="card-desc">${esc(section.desc)}</p>
         <div class="options-grid">
-          ${section.items
-            .map(
-              ([id, title, desc]) => `
-            <div class="option">
-              <input
-                class="option-input"
-                id="f-${id}"
-                type="${inputType}"
-                name="${section.radio ? section.id : id}"
-                value="${id}"
-                ${State.has(id) ? "checked" : ""}
-              >
-              <label class="option-label" for="f-${id}">
-                <span class="option-check">
-                  <svg><use href="icons/icons.svg#icon-check"/></svg>
-                </span>
-                <span>
-                  <span class="option-title">${esc(title)}</span>
-                  <span class="option-desc">${esc(desc)}</span>
-                </span>
-              </label>
-            </div>
-          `
-            )
-            .join("")}
+          ${itemsHtml}
         </div>
       `;
 
       container.appendChild(card);
     });
 
-    // Bind change events on all option inputs
+    // Bind checkbox change events
     container.querySelectorAll(".option-input").forEach((input) => {
       input.addEventListener("change", () => {
         if (input.type === "radio") {
@@ -87,7 +167,49 @@ const Renderer = (() => {
         } else {
           State.toggle(input.value);
         }
+        updatePills();
         updateSelectAllButtons();
+      });
+    });
+
+    // Bind dropdown change events
+    container.querySelectorAll("[data-dropdown]").forEach((select) => {
+      select.addEventListener("change", () => {
+        State.setDropdown(select.dataset.dropdown, select.value);
+        updatePills();
+        // Update description below select
+        const parent = select.closest(".option--dropdown");
+        if (parent) {
+          let descEl = parent.querySelector(".option-dropdown-desc");
+          const itemId = select.dataset.dropdown;
+          const section = FEATURES.find((s) =>
+            s.items.some((it) => !Array.isArray(it) && it.id === itemId)
+          );
+          const item = section?.items.find((it) => !Array.isArray(it) && it.id === itemId);
+          const opt = item?.options?.find(([v]) => v === select.value);
+          if (opt && opt[2]) {
+            if (!descEl) {
+              descEl = document.createElement("span");
+              descEl.className = "option-dropdown-desc";
+              select.parentElement.appendChild(descEl);
+            }
+            descEl.textContent = opt[2];
+          } else if (descEl) {
+            descEl.remove();
+          }
+        }
+      });
+    });
+
+    // Bind text input events (debounced)
+    container.querySelectorAll("[data-text]").forEach((textarea) => {
+      let debounce = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(() => {
+          State.setText(textarea.dataset.text, textarea.value);
+          updatePills();
+        }, 300);
       });
     });
 
@@ -98,11 +220,12 @@ const Renderer = (() => {
         const section = FEATURES.find((s) => s.id === sectionId);
         if (!section) return;
 
-        const allCount = section.items.length;
+        const checkboxItems = section.items.filter((item) => Array.isArray(item));
+        const allCount = checkboxItems.length;
         const selectedCount = State.countInSection(section);
         const shouldSelectAll = selectedCount < allCount;
 
-        section.items.forEach(([id]) => {
+        checkboxItems.forEach(([id]) => {
           if (shouldSelectAll) {
             State.select(id);
           } else {
@@ -111,14 +234,65 @@ const Renderer = (() => {
         });
 
         // Update checkbox visual state
-        section.items.forEach(([id]) => {
+        checkboxItems.forEach(([id]) => {
           const checkbox = document.getElementById(`f-${id}`);
           if (checkbox) checkbox.checked = shouldSelectAll;
         });
 
         State.save();
         updateSelectAllButtons();
+        updatePills();
       });
+    });
+
+    // Render custom sections
+    renderCustomSections(container);
+  }
+
+  /**
+   * Render user-added custom sections as cards.
+   */
+  function renderCustomSections(container) {
+    const customSections = State.getCustomSections ? State.getCustomSections() : [];
+    customSections.forEach((section, index) => {
+      const card = document.createElement("article");
+      card.className = "section-card custom-section-card";
+      card.id = `s-custom-${index}`;
+      const totalIndex = FEATURES.length + index + 1;
+
+      const lines = section.content
+        .split("\n")
+        .map((line) => line.trim())
+        .filter((line) => line);
+      const count = lines.length;
+
+      card.innerHTML = `
+        <div class="card-header">
+          <div class="card-header-left">
+            <span class="section-num">${totalIndex}</span>
+            <h2 class="card-title">${esc(section.title)}</h2>
+          </div>
+          <div class="card-header-right">
+            <span class="pill pill--accent">${count} line${count !== 1 ? "s" : ""}</span>
+            <button class="icon-btn custom-section-remove" data-custom-index="${index}" aria-label="Remove section" title="Remove section" style="width:28px;height:28px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <ul class="custom-section-list">
+          ${lines.map((line) => `<li>${esc(line)}</li>`).join("")}
+        </ul>
+      `;
+
+      const removeBtn = card.querySelector(".custom-section-remove");
+      removeBtn.addEventListener("click", () => {
+        State.removeCustomSection(index);
+        // Re-render from scratch (indexes may shift)
+        const container = document.getElementById("sections");
+        renderSections(container);
+      });
+
+      container.appendChild(card);
     });
   }
 
@@ -131,7 +305,10 @@ const Renderer = (() => {
       const section = FEATURES.find((s) => s.id === sectionId);
       if (!section) return;
 
-      const allSelected = State.countInSection(section) === section.items.length;
+      const checkboxItems = section.items.filter((item) => Array.isArray(item));
+      const allCount = checkboxItems.length;
+      const selectedCount = checkboxItems.filter(([id]) => State.has(id)).length;
+      const allSelected = selectedCount === allCount;
       btn.textContent = allSelected ? "Deselect all" : "Select all";
     });
   }
@@ -187,12 +364,33 @@ const Renderer = (() => {
     if (sectionEl) sectionEl.textContent = FEATURES.length;
   }
 
+  /**
+   * Update conditional section visibility based on project type.
+   */
+  function updateConditionalVisibility() {
+    const projectType = document.getElementById("projectType")?.value || "";
+    FEATURES.forEach((section) => {
+      if (!section.showWhen) return;
+      const card = document.getElementById(`s-${section.id}`);
+      if (card) {
+        const visible = section.showWhen.values.includes(projectType);
+        card.classList.toggle("section-card--hidden", !visible);
+      }
+      // Also toggle sidebar nav item
+      document.querySelectorAll(`.nav-item[data-section="${section.id}"]`).forEach((item) => {
+        item.classList.toggle("nav-item--hidden", !section.showWhen.values.includes(projectType));
+      });
+    });
+  }
+
   return {
     renderSections,
     renderNav,
     updatePills,
     updateStats,
     updateSelectAllButtons,
+    updateConditionalVisibility,
+    isSectionVisible,
     esc
   };
 })();

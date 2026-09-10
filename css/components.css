@@ -437,3 +437,436 @@
   margin-bottom: var(--sp-4);
 }
 
+
+/* ==========================================================================
+   Dropdown Tiles
+   ========================================================================== */
+
+.option--dropdown {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-8);
+  align-items: center;
+  padding: var(--sp-10) var(--sp-12);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-sm);
+  background: var(--systemBg);
+  transition: border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+
+.option--dropdown:hover {
+  border-color: var(--secondaryLabel);
+}
+
+.option-dropdown-label {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.option-dropdown-select {
+  width: 100%;
+  min-width: 0;
+}
+
+.option-dropdown-desc {
+  grid-column: 1 / -1;
+  font-size: var(--fs-caption1);
+  color: var(--secondaryLabel);
+  line-height: 1.35;
+  margin-top: calc(-1 * var(--sp-4));
+}
+
+
+/* ==========================================================================
+   Text Input Tiles
+   ========================================================================== */
+
+.option--text {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: var(--sp-6);
+  padding: var(--sp-10) var(--sp-12);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-sm);
+  background: var(--systemBg);
+  transition: border-color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+}
+
+.option--text:hover {
+  border-color: var(--secondaryLabel);
+}
+
+.option--text:focus-within {
+  border-color: var(--systemBlue);
+  box-shadow: 0 0 0 3.5px rgba(0,122,255,0.12);
+}
+
+.option-text-label {
+  display: flex;
+  align-items: center;
+}
+
+.option-textarea {
+  width: 100%;
+  min-height: 48px;
+  resize: vertical;
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: var(--fs-footnote);
+  line-height: 1.4;
+  color: var(--label);
+}
+
+.option-textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.option-textarea::placeholder {
+  color: var(--tertiaryLabel);
+}
+
+
+/* ==========================================================================
+   Conditional Section Visibility
+   ========================================================================== */
+
+.section-card--hidden {
+  display: none;
+}
+
+.nav-item--hidden {
+  display: none;
+}
+
+
+/* ==========================================================================
+   Popover
+   ========================================================================== */
+
+.popover {
+  position: absolute;
+  top: calc(100% + var(--sp-8));
+  right: 0;
+  z-index: 150;
+  min-width: 280px;
+  max-width: 380px;
+  max-height: 420px;
+  background: var(--elevatedBg);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadowFloat);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  pointer-events: none;
+  transition: opacity var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+
+.popover.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-12) var(--sp-16);
+  border-bottom: 0.5px solid var(--separator);
+}
+
+.popover-title {
+  font-size: var(--fs-subhead);
+  font-weight: 600;
+  color: var(--label);
+}
+
+.popover-body {
+  overflow-y: auto;
+  flex: 1;
+  padding: var(--sp-8);
+}
+
+.popover-empty {
+  padding: var(--sp-24) var(--sp-16);
+  text-align: center;
+  color: var(--secondaryLabel);
+  font-size: var(--fs-footnote);
+}
+
+.popover-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-8);
+  padding: var(--sp-10) var(--sp-12);
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease);
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-family: var(--font-system);
+  text-align: left;
+}
+
+.popover-item[data-format] {
+  color: var(--label);
+  font-size: var(--fs-footnote);
+  font-weight: 400;
+}
+
+.popover-item:hover {
+  background: var(--quaternaryFill);
+}
+
+.popover-item-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.popover-item-name {
+  font-size: var(--fs-footnote);
+  font-weight: 500;
+  color: var(--label);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popover-item-meta {
+  font-size: var(--fs-caption2);
+  color: var(--secondaryLabel);
+  margin-top: var(--sp-2);
+}
+
+.popover-item-actions {
+  display: flex;
+  gap: var(--sp-4);
+  flex-shrink: 0;
+}
+
+.popover-footer {
+  padding: var(--sp-8) var(--sp-12);
+  border-top: 0.5px solid var(--separator);
+  display: flex;
+  gap: var(--sp-8);
+}
+
+.popover-input {
+  flex: 1;
+  height: 32px;
+  padding: 0 var(--sp-10);
+  background: var(--secondaryBg);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-sm);
+  font-size: var(--fs-footnote);
+  color: var(--label);
+  outline: none;
+}
+
+.popover-input:focus {
+  border-color: var(--systemBlue);
+  box-shadow: 0 0 0 3px rgba(0,122,255,0.12);
+}
+
+.popover-input::placeholder {
+  color: var(--tertiaryLabel);
+}
+
+
+/* ==========================================================================
+   Modal
+   ========================================================================== */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-24);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh;
+  background: var(--elevatedBg);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadowFloat);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(16px) scale(0.96);
+  transition: transform var(--dur) var(--ease);
+}
+
+.modal-backdrop.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-16) var(--sp-20);
+  border-bottom: 0.5px solid var(--separator);
+}
+
+.modal-title {
+  font-size: var(--fs-headline);
+  font-weight: 600;
+  color: var(--label);
+  margin: 0;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--sp-20);
+}
+
+.modal-body .form-textarea {
+  min-height: 160px;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-8);
+  padding: var(--sp-12) var(--sp-20);
+  border-top: 0.5px solid var(--separator);
+}
+
+
+/* ==========================================================================
+   Export Split Button
+   ========================================================================== */
+
+.export-group {
+  position: relative;
+  display: inline-flex;
+}
+
+.export-group .btn--filled {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.export-trigger {
+  width: 28px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 0 var(--r-full) var(--r-full) 0;
+  background: #0070e6;
+  color: #fff;
+  cursor: pointer;
+  margin-left: -1px;
+  transition: background var(--dur-fast) var(--ease);
+}
+
+.export-trigger:hover {
+  background: #005bb5;
+}
+
+.export-trigger svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+}
+
+
+/* ==========================================================================
+   Navbar Divider
+   ========================================================================== */
+
+.navbar-divider {
+  width: 1px;
+  height: 24px;
+  background: var(--separator);
+  flex-shrink: 0;
+}
+
+.nav-popover-wrap {
+  position: relative;
+}
+
+
+/* ==========================================================================
+   Custom Sections
+   ========================================================================== */
+
+.custom-section-card {
+  background: var(--secondaryBg);
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadowCard);
+  padding: var(--sp-16);
+  transition: background var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
+}
+
+.custom-section-card:hover {
+  box-shadow: var(--shadowElevated);
+}
+
+.custom-section-list {
+  margin: var(--sp-8) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--sp-6);
+}
+
+.custom-section-list li {
+  position: relative;
+  padding: var(--sp-8) var(--sp-10) var(--sp-8) var(--sp-24);
+  background: var(--systemBg);
+  border: 0.5px solid var(--separator);
+  border-radius: var(--r-xs);
+  font-size: var(--fs-footnote);
+  line-height: 1.4;
+  color: var(--label);
+}
+
+.custom-section-list li::before {
+  content: "";
+  position: absolute;
+  left: var(--sp-10);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--systemBlue);
+  opacity: 0.7;
+}
+

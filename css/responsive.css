@@ -119,6 +119,14 @@
   .navbar-title small { display: none; }
   .navbar-actions .btn span { display: none; }
   .navbar-actions .btn { padding: 0 var(--sp-10); }
+
+  /* Hide dividers and less-critical buttons on mobile */
+  .navbar-divider { display: none; }
+  #undoBtn, #redoBtn { display: none; }
+
+  /* Simplify export group on mobile */
+  .export-group .btn span { display: none; }
+  .export-group .btn { padding: 0 var(--sp-10); }
 }
 
 
@@ -141,4 +149,33 @@
   .stat-value { font-size: var(--fs-title3); }
 
   .navbar-actions .btn--ghost { display: none; }
+
+  /* Popovers go full-width on small screens */
+  .popover {
+    position: fixed;
+    left: var(--sp-8);
+    right: var(--sp-8);
+    min-width: auto;
+    max-width: none;
+    top: auto;
+    bottom: var(--sp-8);
+    max-height: 60vh;
+    border-radius: var(--r-md) var(--r-md) 0 0;
+  }
+
+  /* Modal full-width on small screens */
+  .modal-backdrop {
+    padding: var(--sp-8);
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-height: 85vh;
+    border-radius: var(--r-md) var(--r-md) 0 0;
+  }
+
+  /* Option dropdown single-column */
+  .option--dropdown {
+    grid-template-columns: 1fr;
+  }
 }

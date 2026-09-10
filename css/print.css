@@ -1,0 +1,133 @@
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  /* Hide non-printable elements */
+  .navbar,
+  .sidebar,
+  .circular-nav,
+  .search-bar,
+  .hero,
+  .preview-header-actions,
+  .preview-grab,
+  .toast,
+  .icon-btn,
+  .select-all-btn,
+  .btn,
+  .preview-backdrop,
+  .preview-fullscreen-backdrop,
+  .modal-backdrop,
+  .popover,
+  [data-toggle-preview] {
+    display: none !important;
+  }
+
+  /* Layout */
+  .app {
+    display: block;
+  }
+
+  .container {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .workspace {
+    display: block;
+  }
+
+  .builder {
+    display: block;
+  }
+
+  .preview {
+    display: block;
+    position: static;
+    width: 100%;
+    border: none;
+    padding: 0;
+    margin-top: 24pt;
+    page-break-before: always;
+  }
+
+  .preview-output {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 11pt;
+    border: 1pt solid #ccc;
+    padding: 12pt;
+    border-radius: 4pt;
+  }
+
+  /* Cards */
+  .section-card {
+    border: 0.5pt solid #ddd;
+    border-radius: 4pt;
+    padding: 12pt;
+    margin-bottom: 12pt;
+    page-break-inside: avoid;
+    box-shadow: none;
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .section-card--hidden {
+    display: none !important;
+  }
+
+  /* Option tiles */
+  .option-input:checked + .option-label {
+    border-color: #007AFF;
+    background: rgba(0, 122, 255, 0.08);
+  }
+
+  .option-label {
+    border: 0.5pt solid #ccc;
+    min-height: auto;
+    padding: 6pt;
+  }
+
+  .option--dropdown,
+  .option--text {
+    border: 0.5pt solid #ccc;
+    padding: 6pt;
+  }
+
+  /* Links */
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  /* Headings */
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+  }
+
+  /* Project card */
+  .project-card .fields-grid {
+    display: block;
+  }
+
+  .project-card .form-field {
+    margin-bottom: 8pt;
+  }
+}
