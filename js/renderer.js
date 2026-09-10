@@ -314,31 +314,78 @@ const Renderer = (() => {
   }
 
   /**
-   * Render sidebar navigation items.
+   * Render sidebar navigation items with quick select-all checkboxes.
    */
   function renderNav(container) {
     container.innerHTML = "";
 
     FEATURES.forEach((section, index) => {
-      const btn = document.createElement("button");
-      btn.className = "nav-item";
-      btn.dataset.section = section.id;
-      btn.innerHTML = `
+      const checkboxItems = section.items.filter((item) => Array.isArray(item));
+      const hasCheckboxes = checkboxItems.length > 0;
+      const selectedInSection = checkboxItems.filter(([id]) => State.has(id)).length;
+      const allChecked = hasCheckboxes && selectedInSection === checkboxItems.length;
+
+      const navItem = document.createElement("div");
+      navItem.className = "nav-item";
+      navItem.dataset.section = section.id;
+      navItem.tabIndex = 0;
+      navItem.setAttribute("role", "link");
+      navItem.setAttribute("aria-label", `Go to ${section.title}`);
+
+      navItem.innerHTML = `
+        ${hasCheckboxes ? `
+          <label class="nav-checkbox" title="${allChecked ? "Deselect all" : "Select all"} in section" aria-label="${allChecked ? "Deselect all" : "Select all"} in ${esc(section.title)}">
+            <input class="nav-check" type="checkbox" data-nav-check="${section.id}" ${allChecked ? "checked" : ""}>
+            <span class="nav-checkmark"></span>
+          </label>
+        ` : `<span class="nav-checkbox nav-checkbox--spacer" aria-hidden="true"></span>`}
         <span class="nav-index">${String(index + 1).padStart(2, "0")}</span>
         <span class="nav-label">${esc(section.title)}</span>
+        ${hasCheckboxes ? `<span class="nav-count" data-nav-count="${section.id}" ${selectedInSection ? "" : "hidden"}>${selectedInSection}</span>` : ""}
       `;
-      btn.addEventListener("click", () => {
+
+      navItem.addEventListener("click", (e) => {
+        if (e.target.closest(".nav-checkbox")) return;
         const target = document.getElementById(`s-${section.id}`);
         if (target) {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       });
-      container.appendChild(btn);
+      navItem.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          if (e.target.closest(".nav-checkbox")) return;
+          e.preventDefault();
+          const target = document.getElementById(`s-${section.id}`);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+
+      const check = navItem.querySelector(".nav-check");
+      if (check) {
+        check.addEventListener("change", () => {
+          const shouldSelectAll = check.checked;
+          checkboxItems.forEach(([id]) => {
+            if (shouldSelectAll) State.select(id);
+            else State.deselect(id);
+          });
+          State.save();
+
+          checkboxItems.forEach(([id]) => {
+            const checkbox = document.getElementById(`f-${id}`);
+            if (checkbox) checkbox.checked = shouldSelectAll;
+          });
+          updateSelectAllButtons();
+          updatePills();
+          updateStats();
+        });
+      }
+
+      container.appendChild(navItem);
     });
   }
 
   /**
-   * Update pill counts for each section.
+   * Update pill counts for each section and nav state.
    */
   function updatePills() {
     FEATURES.forEach((section) => {
@@ -351,6 +398,25 @@ const Renderer = (() => {
       }
     });
     updateSelectAllButtons();
+    updateNavState();
+  }
+
+  /**
+   * Refresh sidebar nav checkboxes and counts.
+   */
+  function updateNavState() {
+    FEATURES.forEach((section) => {
+      const checkboxItems = section.items.filter((item) => Array.isArray(item));
+      const selected = checkboxItems.filter(([id]) => State.has(id)).length;
+      const countEl = document.querySelector(`[data-nav-count="${section.id}"]`);
+      if (countEl) {
+        countEl.textContent = selected;
+        countEl.hidden = selected === 0;
+      }
+      document.querySelectorAll(`.nav-check[data-nav-check="${section.id}"]`).forEach((c) => {
+        c.checked = checkboxItems.length > 0 && checkboxItems.every(([id]) => State.has(id));
+      });
+    });
   }
 
   /**
@@ -390,6 +456,7 @@ const Renderer = (() => {
     updateStats,
     updateSelectAllButtons,
     updateConditionalVisibility,
+    updateNavState,
     isSectionVisible,
     esc
   };

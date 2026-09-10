@@ -105,6 +105,15 @@ const PromptBuilder = (() => {
       "- Inspect the finished implementation and fix issues before considering the project complete."
     );
 
+    lines.push(
+      "",
+      "## Output",
+      "- Work step by step, and keep this requirement list visible as the source of truth while implementing.",
+      "- Write the full implementation with real, working code. Do not truncate files or leave stubs.",
+      "- Organize the work logically (setup, structure, implementation, then verification).",
+      "- Summarize at the end what was built, what was tested, and anything the user must configure or run."
+    );
+
     if (state.has("profile")) {
       lines.push(
         "",

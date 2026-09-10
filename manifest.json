@@ -1,0 +1,44 @@
+{
+  "name": "Prompt Architect",
+  "short_name": "Prompt Architect",
+  "description": "Design precise, production-ready prompts for AI coding assistants. Pick requirements, tune performance, export clean specs.",
+  "id": "/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F2F2F7",
+  "theme_color": "#F2F2F7",
+  "orientation": "any",
+  "categories": ["developer tools", "productivity", "utilities"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "icons/pwa/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/pwa/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/pwa/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New prompt",
+      "short_name": "New",
+      "description": "Start a fresh prompt",
+      "url": "./index.html",
+      "icons": [{ "src": "icons/pwa/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": []
+}

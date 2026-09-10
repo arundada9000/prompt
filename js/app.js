@@ -117,23 +117,26 @@
         return;
       }
 
+      const itemMatches = (item) => {
+        const title = (item.title || item[1] || "").toLowerCase();
+        const desc = (item[2] || "").toLowerCase();
+        const placeholder = (item.placeholder || "").toLowerCase();
+        return title.includes(query) || desc.includes(query) || placeholder.includes(query);
+      };
+
       section.items.forEach((item) => {
-        if (!Array.isArray(item)) return;
-        const [id, title, desc] = item;
-        const optionEl = card.querySelector(`#f-${CSS.escape(id)}`)?.closest(".option");
+        const optionEl = card.querySelector(`#f-${CSS.escape(item.id || item[0])}`)?.closest(".option");
         if (!optionEl) return;
 
-        const titleMatch = title.toLowerCase().includes(query);
-        const descMatch = desc.toLowerCase().includes(query);
-        const match = titleMatch || descMatch;
-
-        if (match) {
+        if (itemMatches(item)) {
           optionEl.classList.remove("search-hidden");
           sectionHasMatch = true;
-          const titleEl = optionEl.querySelector(".option-title");
-          const descEl = optionEl.querySelector(".option-desc");
-          if (titleEl) titleEl.innerHTML = highlightText(Renderer.esc(title), regex);
-          if (descEl) descEl.innerHTML = highlightText(Renderer.esc(desc), regex);
+          if (Array.isArray(item)) {
+            const titleEl = optionEl.querySelector(".option-title");
+            const descEl = optionEl.querySelector(".option-desc");
+            if (titleEl) titleEl.innerHTML = highlightText(Renderer.esc(item[1]), regex);
+            if (descEl) descEl.innerHTML = highlightText(Renderer.esc(item[2]), regex);
+          }
         } else {
           optionEl.classList.add("search-hidden");
         }
@@ -199,6 +202,7 @@
   async function copyPrompt() {
     try {
       await navigator.clipboard.writeText(getCurrentText());
+      bumpGeneratedCount();
       showToast("Copied to clipboard");
     } catch {
       showToast("Clipboard access failed");
@@ -248,6 +252,7 @@
     a.download = `generated-prompt.${ext}`;
     a.click();
     URL.revokeObjectURL(url);
+    bumpGeneratedCount();
     showToast(`Downloaded as .${ext}`);
   }
 
@@ -302,6 +307,60 @@
     toastTimer = setTimeout(() => toast.classList.remove("show"), 2200);
   }
 
+  /* Expose to presets.js (loaded before App) */
+  window.showToast = showToast;
+  window.renderPresets = renderPresets;
+  window.exportPresetsFile = exportPresetsFile;
+  window.importPresetsFile = importPresetsFile;
+
+  /* ---- Generated counter ---- */
+  function bumpGeneratedCount() {
+    const key = "pa-generated-count";
+    const n = (parseInt(localStorage.getItem(key) || "0", 10)) + 1;
+    try { localStorage.setItem(key, String(n)); } catch (e) { /* ignore */ }
+    renderGeneratedCount(n);
+  }
+
+  function renderGeneratedCount(n) {
+    const el = $("generatedCount");
+    if (el) el.textContent = Number.isFinite(n) ? n.toLocaleString() : (parseInt(localStorage.getItem("pa-generated-count") || "0", 10)).toLocaleString();
+  }
+
+  /* ---- PWA install ---- */
+  let deferredInstall = null;
+  function initPWA() {
+    if (window.addEventListener) {
+      window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredInstall = e;
+        const btn = $("footerInstallBtn");
+        if (btn) btn.hidden = false;
+      });
+      window.addEventListener("appinstalled", () => {
+        deferredInstall = null;
+        const btn = $("footerInstallBtn");
+        if (btn) btn.hidden = true;
+        showToast("App installed");
+      });
+    }
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js").catch(() => { /* offline optional */ });
+    }
+  }
+
+  async function installApp() {
+    if (!deferredInstall || !deferredInstall.prompt) {
+      showToast("Use your browser's install option");
+      return;
+    }
+    try {
+      await deferredInstall.prompt();
+      deferredInstall = null;
+      const btn = $("footerInstallBtn");
+      if (btn) btn.hidden = true;
+    } catch (e) { /* user dismissed */ }
+  }
+
   /* ---- Popovers ---- */
   function closeAllPopovers() {
     document.querySelectorAll(".popover.open").forEach((p) => {
@@ -336,7 +395,7 @@
       return `
         <div class="popover-item" data-preset-load="${i}">
           <div class="popover-item-info">
-            <div class="popover-item-name">${Renderer.esc(p.name)}</div>
+            <div class="popover-item-name">${Renderer.esc(p.name)}${p.factory ? '<span class="preset-badge">Built-in</span>' : ""}</div>
             <div class="popover-item-meta">${date} &middot; ${count} selections</div>
           </div>
           <div class="popover-item-actions">
@@ -523,6 +582,35 @@
     showToast("Custom section added");
   }
 
+  /* ---- Modals ---- */
+  function openModal(id) {
+    const el = $(id);
+    if (el) el.classList.add("open");
+  }
+
+  function closeModal(id) {
+    const el = $(id);
+    if (el) el.classList.remove("open");
+  }
+
+  function renderJournal() {
+    const list = $("journalList");
+    if (!list || !window.Content) return;
+    list.innerHTML = Content.journal.map((article) => `
+      <article class="journal-card">
+        <div class="journal-meta">
+          <span class="journal-tag">${Renderer.esc(article.tag)}</span>
+          <span class="journal-date">${Renderer.esc(article.date)} &middot; ${article.minutes} min read</span>
+        </div>
+        <h4 class="journal-title">${Renderer.esc(article.title)}</h4>
+        <p class="journal-excerpt">${Renderer.esc(article.excerpt)}</p>
+        <div class="journal-body">
+          ${article.body.map((p) => `<p>${Renderer.esc(p)}</p>`).join("")}
+        </div>
+      </article>
+    `).join("");
+  }
+
   /* ---- URL Hash ---- */
   function loadFromHash() {
     const project = State.fromHash();
@@ -672,6 +760,10 @@
         e.stopPropagation();
       });
     }
+    const presetExportBtn = $("presetExportBtn");
+    if (presetExportBtn) presetExportBtn.addEventListener("click", exportPresetsFile);
+    const presetImportBtn = $("presetImportBtn");
+    if (presetImportBtn) presetImportBtn.addEventListener("click", importPresetsFile);
 
     // History
     const historyBtn = $("historyBtn");
@@ -721,6 +813,50 @@
     const customSaveBtn = $("customSectionSaveBtn");
     if (customSaveBtn) customSaveBtn.addEventListener("click", saveCustomSection);
 
+    // Journal
+    const journalBtn = $("journalBtn");
+    if (journalBtn) journalBtn.addEventListener("click", () => { renderJournal(); openModal("journalModal"); });
+    const journalModalClose = $("journalModalClose");
+    if (journalModalClose) journalModalClose.addEventListener("click", () => closeModal("journalModal"));
+    const footerJournalBtn = $("footerJournalBtn");
+    if (footerJournalBtn) footerJournalBtn.addEventListener("click", () => { renderJournal(); openModal("journalModal"); });
+
+    // Guide
+    const helpBtn = $("helpBtn");
+    if (helpBtn) helpBtn.addEventListener("click", () => openModal("guideModal"));
+    const guideModalClose = $("guideModalClose");
+    if (guideModalClose) guideModalClose.addEventListener("click", () => closeModal("guideModal"));
+    const footerGuideBtn = $("footerGuideBtn");
+    if (footerGuideBtn) footerGuideBtn.addEventListener("click", () => openModal("guideModal"));
+    const guideJournalBtn = $("guideJournalBtn");
+    if (guideJournalBtn) guideJournalBtn.addEventListener("click", () => { closeModal("guideModal"); renderJournal(); openModal("journalModal"); });
+
+    // Shortcuts
+    const shortcutsBtn = $("shortcutsBtn");
+    if (shortcutsBtn) shortcutsBtn.addEventListener("click", () => openModal("shortcutsModal"));
+    const shortcutsModalClose = $("shortcutsModalClose");
+    if (shortcutsModalClose) shortcutsModalClose.addEventListener("click", () => closeModal("shortcutsModal"));
+    const footerShortcutsBtn = $("footerShortcutsBtn");
+    if (footerShortcutsBtn) footerShortcutsBtn.addEventListener("click", () => openModal("shortcutsModal"));
+
+    // Welcome
+    const welcomeGuideBtn = $("welcomeGuideBtn");
+    if (welcomeGuideBtn) welcomeGuideBtn.addEventListener("click", () => { closeModal("welcomeModal"); openModal("guideModal"); });
+    const welcomeStartBtn = $("welcomeStartBtn");
+    if (welcomeStartBtn) welcomeStartBtn.addEventListener("click", () => closeModal("welcomeModal"));
+
+    // Footer export buttons
+    document.querySelectorAll(".footer-link[data-format]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setExportFormat(btn.dataset.format);
+        exportPrompt();
+      });
+    });
+
+    // Footer install
+    const footerInstallBtn = $("footerInstallBtn");
+    if (footerInstallBtn) footerInstallBtn.addEventListener("click", installApp);
+
     // Close popovers on outside click
     document.addEventListener("click", (e) => {
       if (!e.target.closest(".nav-popover-wrap") && !e.target.closest(".export-group")) {
@@ -739,17 +875,70 @@
 
     // Keyboard shortcuts
     document.addEventListener("keydown", (e) => {
+      const mod = e.metaKey || e.ctrlKey;
+      const inField = ["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName);
+
       // Ctrl/Cmd + Shift + C to copy
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "C") {
+      if (mod && e.shiftKey && e.key === "C") {
         e.preventDefault();
         copyPrompt();
       }
       // Ctrl/Cmd + K to focus search
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      if (mod && e.key === "k") {
         e.preventDefault();
         if (searchInput) {
           searchInput.focus();
           searchInput.select();
+        }
+      }
+      // Ctrl/Cmd + S to download prompt
+      if (mod && !e.shiftKey && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        exportPrompt();
+      }
+      // Ctrl/Cmd + Shift + P to save preset
+      if (mod && e.shiftKey && e.key === "P") {
+        e.preventDefault();
+        const input = $("presetNameInput");
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }
+      // Ctrl/Cmd + Shift + I to import
+      if (mod && e.shiftKey && e.key === "I") {
+        e.preventDefault();
+        openImportModal();
+      }
+      // Ctrl/Cmd + Shift + H to open history
+      if (mod && e.shiftKey && e.key === "H") {
+        e.preventDefault();
+        renderHistory();
+        togglePopover($("historyPopover"));
+      }
+      // Ctrl/Cmd + Shift + F to fullscreen preview
+      if (mod && e.shiftKey && e.key.toLowerCase() === "f") {
+        e.preventDefault();
+        toggleFullscreen();
+      }
+      // Ctrl/Cmd + Shift + E to open export menu
+      if (mod && e.shiftKey && e.key.toLowerCase() === "e") {
+        e.preventDefault();
+        togglePopover($("exportPopover"));
+      }
+      // ? to show shortcuts panel (Shift is required to type "?", so don't exclude it)
+      if (!inField && e.key === "?" && !mod) {
+        e.preventDefault();
+        openModal("shortcutsModal");
+      }
+      // 1-9 to jump to a numbered section
+      if (!inField && !mod && /^[1-9]$/.test(e.key)) {
+        e.preventDefault();
+        const idx = parseInt(e.key, 10) - 1;
+        const section = FEATURES[idx];
+        if (section) {
+          const target = document.getElementById(`s-${section.id}`);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }
       // Escape to close fullscreen
@@ -764,15 +953,14 @@
         closeAllPopovers();
       }
       // Ctrl/Cmd + Z for undo
-      if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key === "z") {
-        // Don't intercept if in an input/textarea
-        if (document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "TEXTAREA") return;
+      if (mod && !e.shiftKey && e.key === "z") {
+        if (inField) return;
         e.preventDefault();
         undo();
       }
       // Ctrl/Cmd + Shift + Z for redo
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "z") {
-        if (document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "TEXTAREA") return;
+      if (mod && e.shiftKey && e.key === "z") {
+        if (inField) return;
         e.preventDefault();
         redo();
       }
@@ -783,5 +971,18 @@
   initTheme();
   loadFromHash();
   wireEvents();
+  renderGeneratedCount();
+  initPWA();
+  if (typeof seedFactoryPresets === "function") {
+    seedFactoryPresets();
+  }
+  const yearEl = $("footerYear");
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
   render();
+  try {
+    if (!localStorage.getItem("pa-seen-welcome")) {
+      openModal("welcomeModal");
+      localStorage.setItem("pa-seen-welcome", "1");
+    }
+  } catch (e) { /* ignore */ }
 })();

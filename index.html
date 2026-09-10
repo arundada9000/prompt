@@ -3,11 +3,58 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="Prompt Architect: generate polished, production-ready software development prompts from reusable requirements.">
+  <title>Prompt Architect — Build precise AI development prompts</title>
+
+  <!-- Primary SEO -->
+  <meta name="description" content="Free prompt generator that turns reusable requirements into one clean, production-ready development prompt for AI coding assistants (Claude, Cursor, Copilot, Codex). Checkboxes, tech-stack dropdowns, presets, exports, keyboard shortcuts.">
+  <meta name="keywords" content="prompt generator, AI coding prompt, development prompt, prompt template, software requirements, Claude prompt, Cursor prompt, prompt builder, prompt architect">
+  <meta name="author" content="Prompt Architect">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://prompt-architect.example.com/">
   <meta name="theme-color" content="#F2F2F7">
+
+  <!-- PWA / Mobile -->
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Prompt Architect</title>
+  <meta name="apple-mobile-web-app-title" content="Prompt Architect">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/pwa/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/pwa/icon-192.png">
+  <link rel="shortcut icon" href="icons/icons.svg">
+
+  <!-- Open Graph (Facebook, LinkedIn, iMessage) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://prompt-architect.example.com/">
+  <meta property="og:site_name" content="Prompt Architect">
+  <meta property="og:title" content="Prompt Architect — Build precise AI development prompts">
+  <meta property="og:description" content="Turn reusable requirements into one clean, production-ready development prompt for any AI coding assistant. Checkboxes, tech-stack dropdowns, presets, and one-click export.">
+  <meta property="og:image" content="icons/pwa/icon-512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:image:alt" content="Prompt Architect logo">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Prompt Architect — Build precise AI development prompts">
+  <meta name="twitter:description" content="A free prompt generator that assembles production-ready development prompts for AI coding assistants from reusable requirements.">
+  <meta name="twitter:image" content="icons/pwa/icon-512.png">
+
+  <!-- Structured data (AEO / rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Prompt Architect",
+    "url": "https://prompt-architect.example.com/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "description": "Free prompt generator that assembles a clean, production-ready development prompt for AI coding assistants from reusable requirement checklists.",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": "Requirement checklists, tech-stack dropdowns, text inputs, presets, prompt history, undo/redo, Markdown/JSON/YAML export, paste-and-match import, keyboard shortcuts, offline PWA",
+    "creator": { "@type": "Organization", "name": "Prompt Architect" }
+  }
+  </script>
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -20,6 +67,7 @@
   <link rel="stylesheet" href="css/preview.css">
   <link rel="stylesheet" href="css/circular-nav.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/extras.css">
   <link rel="stylesheet" href="css/print.css" media="print">
 </head>
 <body>
@@ -73,6 +121,10 @@
               <input class="popover-input" id="presetNameInput" type="text" placeholder="Preset name..." autocomplete="off">
               <button class="btn btn--filled" id="savePresetBtn" style="height:32px; padding:0 12px; font-size:13px;">Save</button>
             </div>
+            <div class="popover-actions">
+              <button class="popover-action" id="presetExportBtn">Export presets</button>
+              <button class="popover-action" id="presetImportBtn">Import presets...</button>
+            </div>
           </div>
         </div>
 
@@ -93,6 +145,18 @@
 
         <button class="icon-btn" id="importBtn" aria-label="Import prompt" title="Import and match prompt">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+
+        <button class="icon-btn" id="journalBtn" aria-label="Journal and how-to guides" title="Journal & guides">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </button>
+
+        <button class="icon-btn" id="helpBtn" aria-label="Quick guide" title="Quick guide">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+
+        <button class="icon-btn" id="shortcutsBtn" aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><path d="M6 8h.01"/><path d="M10 8h.01"/><path d="M14 8h.01"/><path d="M18 8h.01"/><path d="M6 12h.01"/><path d="M10 12h.01"/><path d="M14 12h.01"/><path d="M18 12h.01"/><path d="M6 16h.01"/><path d="M10 16h.01"/><path d="M14 16h.01"/><path d="M18 16h.01"/></svg>
         </button>
 
         <button class="icon-btn" id="shareBtn" aria-label="Share configuration" title="Copy shareable URL">
@@ -266,6 +330,44 @@
     <!-- Fullscreen backdrop -->
     <div class="preview-fullscreen-backdrop" id="fullscreenBackdrop"></div>
 
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#top" class="navbar-brand" aria-label="Prompt Architect home">
+            <span class="navbar-logo" aria-hidden="true">
+              <svg><use href="icons/icons.svg#icon-star"/></svg>
+            </span>
+            <span class="navbar-title">
+              <strong>Prompt Architect</strong>
+              <small>Development prompt builder</small>
+            </span>
+          </a>
+          <p class="footer-tagline">Free, offline-first prompt generator for AI coding assistants. No account, no tracking, no sign-up.</p>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h4 class="footer-heading">Tool</h4>
+            <button class="footer-link" id="footerInstallBtn" hidden>Install app</button>
+            <button class="footer-link" id="footerShortcutsBtn">Keyboard shortcuts</button>
+            <button class="footer-link" id="footerGuideBtn">Quick guide</button>
+            <button class="footer-link" id="footerJournalBtn">Journal</button>
+          </div>
+          <div class="footer-col">
+            <h4 class="footer-heading">Export</h4>
+            <button class="footer-link" data-format="markdown">Markdown</button>
+            <button class="footer-link" data-format="json">JSON</button>
+            <button class="footer-link" data-format="yaml">YAML</button>
+            <button class="footer-link" data-format="text">Plain text</button>
+          </div>
+        </div>
+        <div class="footer-foot">
+          <span class="footer-stat"><strong id="generatedCount">0</strong> prompts generated</span>
+          <span class="footer-copy">&copy; <span id="footerYear">2026</span> Prompt Architect &middot; Built for developers</span>
+        </div>
+      </div>
+    </footer>
+
     <!-- Toast -->
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -319,10 +421,104 @@
       </div>
     </div>
 
+    <!-- Shortcuts Modal -->
+    <div class="modal-backdrop" id="shortcutsModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Keyboard shortcuts</h3>
+          <button class="icon-btn" id="shortcutsModalClose" aria-label="Close">
+            <svg><use href="icons/icons.svg#icon-close"/></svg>
+          </button>
+        </div>
+        <div class="modal-body shortcuts-grid" id="shortcutsGrid">
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>K</kbd><span>Focus search</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Z</kbd><span>Undo</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>Z</kbd><span>Redo</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>C</kbd><span>Copy prompt</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>S</kbd><span>Download prompt</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>P</kbd><span>Save preset</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>I</kbd><span>Import prompt</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>H</kbd><span>Prompt history</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>F</kbd><span>Fullscreen preview</span></div>
+          <div class="shortcut-row"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>E</kbd><span>Open export menu</span></div>
+          <div class="shortcut-row"><kbd>1</kbd><kbd>-</kbd><kbd>9</kbd><span>Jump to section + more</span></div>
+          <div class="shortcut-row"><kbd>?</kbd><span>Show this panel</span></div>
+          <div class="shortcut-row"><kbd>Esc</kbd><span>Close modal / fullscreen</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide Modal -->
+    <div class="modal-backdrop" id="guideModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Quick guide</h3>
+          <button class="icon-btn" id="guideModalClose" aria-label="Close">
+            <svg><use href="icons/icons.svg#icon-close"/></svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="guide-section">
+            <h4 class="guide-h">1. Set the scene</h4>
+            <p class="guide-p">Enter your project name, type, and a short description. Project type controls which sections appear (e.g. PWA reveals a dedicated section).</p>
+          </div>
+          <div class="guide-section">
+            <h4 class="guide-h">2. Pick requirements</h4>
+            <p class="guide-p">Tick the checkboxes you want in the prompt. Use the sidebar checkboxes to select or clear an entire section at once. Dropdowns and text fields tune exact values (Python <span class="accent-text">3.12</span>, Vite + React, LCP under 2.5s, etc.).</p>
+          </div>
+          <div class="guide-section">
+            <h4 class="guide-h">3. Review the prompt</h4>
+            <p class="guide-p">The generated prompt updates live. Copy it, download as Markdown/JSON/YAML/TXT, or expand it fullscreen. Undo/redo fixes mistakes; keyboard shortcut <kbd>?</kbd> lists every shortcut.</p>
+          </div>
+          <div class="guide-section">
+            <h4 class="guide-h">4. Reuse your work</h4>
+            <p class="guide-p">Save presets for standard stacks, restore past versions from history, paste an old prompt to auto-match requirements, or share a URL snapshot. Everything is stored locally in your browser.</p>
+          </div>
+          <button class="btn btn--tinted btn--full" id="guideJournalBtn" style="margin-top: var(--sp-8);">Read the journal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Journal Modal -->
+    <div class="modal-backdrop" id="journalModal">
+      <div class="modal modal--wide">
+        <div class="modal-header">
+          <h3 class="modal-title">Journal</h3>
+          <button class="icon-btn" id="journalModalClose" aria-label="Close">
+            <svg><use href="icons/icons.svg#icon-close"/></svg>
+          </button>
+        </div>
+        <div class="modal-body" id="journalList"></div>
+      </div>
+    </div>
+
+    <!-- Welcome Modal -->
+    <div class="modal-backdrop" id="welcomeModal">
+      <div class="modal modal--welcome">
+        <div class="welcome-icon" aria-hidden="true">
+          <svg><use href="icons/icons.svg#icon-star"/></svg>
+        </div>
+        <h3 class="modal-title" style="text-align:center;">Welcome to Prompt Architect</h3>
+        <p class="guide-p" style="text-align:center; margin:0 0 var(--sp-12);">Design precise prompts for AI coding assistants. Pick requirements, tune the details, and export a clean spec.</p>
+        <div class="welcome-features">
+          <div class="welcome-feature"><strong>21 requirement sections</strong><span>Security, testing, performance, CI/CD and more</span></div>
+          <div class="welcome-feature"><strong>Live prompt preview</strong><span>Copy or export in Markdown, JSON, YAML or TXT</span></div>
+          <div class="welcome-feature"><strong>Presets &amp; history</strong><span>Save your favourite stacks, restore past versions</span></div>
+          <div class="welcome-feature"><strong>Offline PWA</strong><span>Installable, works without a connection</span></div>
+        </div>
+        <div class="modal-footer" style="border:none; padding-top:var(--sp-4);">
+          <button class="btn btn--ghost" id="welcomeGuideBtn">Take the tour</button>
+          <button class="btn btn--filled" id="welcomeStartBtn">Start building</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="js/features.js"></script>
   <script src="js/state.js"></script>
+  <script src="js/presets.js"></script>
+  <script src="js/content.js"></script>
   <script src="js/prompt-builder.js"></script>
   <script src="js/renderer.js"></script>
   <script src="js/interactions.js"></script>
