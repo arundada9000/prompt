@@ -803,7 +803,78 @@ const FEATURES = [
   },
 
   /* ========================================================================
-     21. Global instructions
+     21. Development workflow
+     ======================================================================== */
+  {
+    id: "workflow",
+    title: "Development workflow",
+    desc: "Rules for how the assistant should work: plan, track, ask, and commit.",
+    items: [
+      [
+        "create-rules",
+        "Create rules/ folder with tracker.md",
+        "Create a rules/ folder containing a tracker.md file that records tasks completed, decisions made, and the current progress of the project."
+      ],
+      [
+        "follow-plan",
+        "Create plan.md and follow it",
+        "First create a plan.md (or equivalent) plan file, read it carefully before implementing, and follow it as the source of truth. Keep it in sync as work proceeds."
+      ],
+      [
+        "no-assumptions",
+        "Ask when unsure, never assume",
+        "Do not assume requirements. If anything is ambiguous, missing, or conflicting, stop and ask for clarification before proceeding."
+      ],
+      [
+        "best-option",
+        "Always choose the best approach",
+        "When several valid approaches exist, choose the most performant, maintainable, and appropriate one. Briefly state the choice and why it beats the alternatives."
+      ],
+      [
+        "performance-fast",
+        "Performance and speed priority",
+        "Prioritize performance and speed: fast load times, instant interactions, efficient data handling. Treat every added dependency and network request as a cost."
+      ],
+      [
+        "animations-motion",
+        "Animations and microinteractions",
+        "Include purposeful animations and microinteractions throughout the UI. Do not ship a static, lifeless interface."
+      ],
+      [
+        "gestures",
+        "Swipe, double-click, and context interactions",
+        "Add swipe gestures, double-click behaviors, context menus, and other natural interactions wherever they genuinely improve the experience."
+      ],
+      [
+        "custom-context-menu",
+        "Custom context menu",
+        "Replace default browser context menus with a custom context menu that matches the project's design system."
+      ],
+      [
+        "console-message",
+        "Fun developer console message",
+        "Add a styled, on-brand, and humorous message to the browser developer console. It should never be left empty or default."
+      ],
+      [
+        "fun-404",
+        "On-brand 404 and error pages",
+        "Build custom 404 and error pages that match the project aesthetics, use tasteful humor, and provide helpful navigation."
+      ],
+      [
+        "tracker-updates",
+        "Keep tracker.md updated",
+        "Update rules/tracker.md as each task is completed so it is always an accurate record of what has been done."
+      ],
+      [
+        "commit-tasks",
+        "Commit every meaningful task",
+        "Commit work at every meaningful milestone with clear, descriptive commit messages. Do not batch unrelated changes into single commits."
+      ]
+    ]
+  },
+
+  /* ========================================================================
+     22. Global instructions
      ======================================================================== */
   {
     id: "global",

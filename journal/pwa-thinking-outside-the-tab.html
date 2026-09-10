@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>PWA: thinking outside the tab | Prompt Architect</title>
+  <meta name="description" content="Installable, offline, and fast. What a service worker and manifest actually commit to, and the prompt lines that make them real.">
+  <link rel="canonical" href="https://sajiloprompt.vercel.app/journal/pwa-thinking-outside-the-tab.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Prompt Architect">
+  <meta property="og:url" content="https://sajiloprompt.vercel.app/journal/pwa-thinking-outside-the-tab.html">
+  <meta property="og:title" content="PWA: thinking outside the tab | Prompt Architect">
+  <meta property="og:description" content="Installable, offline, and fast. What a service worker and manifest actually commit to, and the prompt lines that make them real.">
+  <meta property="og:image" content="https://sajiloprompt.vercel.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PWA: thinking outside the tab | Prompt Architect">
+  <meta name="twitter:description" content="Installable, offline, and fast. What a service worker and manifest actually commit to, and the prompt lines that make them real.">
+  <meta name="twitter:image" content="https://sajiloprompt.vercel.app/og-image.png">
+  <link rel="stylesheet" href="/css/pages.css">
+  <link rel="icon" href="/icons/icons.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/pwa/apple-touch-icon.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"PWA: thinking outside the tab","description":"Installable, offline, and fast. What a service worker and manifest actually commit to, and the prompt lines that make them real.","datePublished":"Jul 2026","author":{"@type":"Person","name":"Arun Neupane","url":"https://github.com/arundada9000"},"publisher":{"@type":"Organization","name":"Prompt Architect","url":"https://sajiloprompt.vercel.app"},"image":"https://sajiloprompt.vercel.app/og-image.png","mainEntityOfPage":"https://sajiloprompt.vercel.app/journal/pwa-thinking-outside-the-tab.html"}</script>
+</head>
+<body class="page-shell">
+
+  <header class="page-header">
+    <div class="page-header-inner">
+      <a class="page-brand" href="/" aria-label="Prompt Architect home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.09 6.26L20 9.27l-4.45 4.7L16.91 20 12 16.9 7.09 20l1.36-6.03L4 9.27l5.91-1.01z"/></svg>
+        Prompt Architect
+      </a>
+      <nav class="page-nav" aria-label="Site">
+        <a href="/">Builder</a>
+        <a href="/journal/">Journal</a>  
+        <a href="/guide/">Guide</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-main">
+    <a class="back-link" href="/journal/">&larr; All journal posts</a>
+    <article class="page-prose">
+      <div class="article-meta">
+        <span class="tag-pill">PWA</span>
+        <span>Jul 2026 &middot; 4 min read</span>
+      </div>
+      <div class="page-hero">
+        <h1>PWA: thinking outside the tab</h1>
+        <p>Installable, offline, and fast. What a service worker and manifest actually commit to, and the prompt lines that make them real.</p>
+      </div>
+    <p>A PWA is a promise with three clauses: it installs like an app, opens offline, and loads fast on repeat visits. Each clause maps to concrete files: manifest, service worker, and a runtime cache strategy.</p>
+    <p>The manifest needs a name, a theme color with backdrop, icons in 192 and 512 (plus maskable), and a start URL. The service worker needs a precache list, a network-first update path, and an offline fallback page.</p>
+    <p>Offline is the contract people notice first. Precache the app shell, route navigations to the cache, and serve a friendly offline page when the network is missing.</p>
+    <p>Ask the model to verify installation criteria and the offline flow in the audit section of the prompt. Installability regressions are silent and expensive to find later.</p>
+    </article>
+    <nav class="page-nav" aria-label="Continue">
+      <a href="/journal/">More from the journal</a> &middot; <a href="/guide/">Read the guide</a>
+    </nav>
+  </main>
+
+  <footer class="page-footer">
+    <span>&copy; 2026 Prompt Architect &middot; Built by <a href="https://github.com/arundada9000" target="_blank" rel="noopener noreferrer">Arun Neupane</a></span>
+    <a href="/index.html#t=PWA">Open the builder</a>
+  </footer>
+</body>
+</html>

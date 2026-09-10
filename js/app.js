@@ -595,8 +595,8 @@
 
   function renderJournal() {
     const list = $("journalList");
-    if (!list || !window.Content) return;
-    list.innerHTML = Content.journal.map((article) => `
+    if (!list || typeof Content === "undefined") return;
+    const cards = Content.journal.map((article) => `
       <article class="journal-card">
         <div class="journal-meta">
           <span class="journal-tag">${Renderer.esc(article.tag)}</span>
@@ -604,11 +604,11 @@
         </div>
         <h4 class="journal-title">${Renderer.esc(article.title)}</h4>
         <p class="journal-excerpt">${Renderer.esc(article.excerpt)}</p>
-        <div class="journal-body">
-          ${article.body.map((p) => `<p>${Renderer.esc(p)}</p>`).join("")}
-        </div>
+        <a class="journal-read" href="journal/${Renderer.esc(article.slug)}.html">Read the full article</a>
       </article>
     `).join("");
+    const browse = `<p class="journal-browse"><a href="journal/">Browse all posts on one page</a></p>`;
+    list.innerHTML = cards + browse;
   }
 
   /* ---- URL Hash ---- */
@@ -985,4 +985,18 @@
       localStorage.setItem("pa-seen-welcome", "1");
     }
   } catch (e) { /* ignore */ }
+
+  /* ---- Developer console message (on-brand, useful, no emojis) ---- */
+  console.log(
+    "%c Prompt Architect ",
+    "background:#0A84FF;color:#fff;font-weight:700;padding:2px 8px;border-radius:3px 0 0 3px;"
+  );
+  console.log(
+    "%c Build prompts, not promises. ",
+    "background:#0064E0;color:#fff;padding:2px 8px;border-radius:0 3px 3px 0;"
+  );
+  console.log(
+    "Crafted by Arun Neupane (arundada9000)  ·  github.com/arundada9000  ·  sajiloprompt.vercel.app\nTry the presets, then press Ctrl+Shift+C to copy a prompt.",
+    "color:#8E8E93;font-size:11px;"
+  );
 })();

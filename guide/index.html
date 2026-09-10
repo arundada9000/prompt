@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>The Prompt Architect guide | Prompt Architect</title>
+  <meta name="description" content="How to assemble, tune, export, and reuse precise development prompts for AI coding assistants.">
+  <link rel="canonical" href="https://sajiloprompt.vercel.app/guide/">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Prompt Architect">
+  <meta property="og:url" content="https://sajiloprompt.vercel.app/guide/">
+  <meta property="og:title" content="The Prompt Architect guide | Prompt Architect">
+  <meta property="og:description" content="How to assemble, tune, export, and reuse precise development prompts for AI coding assistants.">
+  <meta property="og:image" content="https://sajiloprompt.vercel.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Prompt Architect guide | Prompt Architect">
+  <meta name="twitter:description" content="How to assemble, tune, export, and reuse precise development prompts for AI coding assistants.">
+  <meta name="twitter:image" content="https://sajiloprompt.vercel.app/og-image.png">
+  <link rel="stylesheet" href="/css/pages.css">
+  <link rel="icon" href="/icons/icons.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/pwa/apple-touch-icon.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"The Prompt Architect guide","description":"How to assemble, tune, export, and reuse precise development prompts for AI coding assistants.","url":"https://sajiloprompt.vercel.app/guide/","author":{"@type":"Person","name":"Arun Neupane","url":"https://github.com/arundada9000"}}</script>
+</head>
+<body class="page-shell">
+
+  <header class="page-header">
+    <div class="page-header-inner">
+      <a class="page-brand" href="/" aria-label="Prompt Architect home">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.09 6.26L20 9.27l-4.45 4.7L16.91 20 12 16.9 7.09 20l1.36-6.03L4 9.27l5.91-1.01z"/></svg>
+        Prompt Architect
+      </a>
+      <nav class="page-nav" aria-label="Site">
+        <a href="/">Builder</a>
+        <a href="/journal/">Journal</a>  
+        <a href="/guide/">Guide</a>
+      </nav>
+    </div>
+  </header>
+  <main class="page-main">
+    <div class="page-hero">
+      <h1>The Prompt Architect guide</h1>
+      <p>How to assemble, tune, export, and reuse precise development prompts for AI coding assistants.</p>
+    </div>
+    <div class="page-prose">
+      <p>Prompt Architect turns reusable requirements into one clean, production-ready development prompt. This guide covers the full workflow, from first click to repeatable presets.</p>
+    </div>
+
+    <section class="guide-card">
+      <h2>Start with the project card</h2>
+      <p>Give the project a name and the surface type on the left. The type may reveal extra sections (choose PWA and the platform section appears by itself). Type a quick description of what you are building, then select a tech stack from the dropdowns. Each dropdown shows a short rationale under the select.</p>
+      <ul>
+        <li>Name and type are always included in the output.</li>
+        <li>Description is free text; the assistant treats it as context, so write full sentences.</li>
+        <li>Dropdowns give you presets only, with rationale shown for each.</li>
+      </ul>
+    </section>
+
+    <section class="guide-card">
+      <h2>Mark requirements across the sections</h2>
+      <p>The sidebar lists all sections with a running count. Each checkbox is a requirement the generated prompt states verbatim. There is no wrong combination, but fewer, precise boxes often outperform a wall of boxes.</p>
+      <ul>
+        <li>Use &#39;Select all&#39; in a section when it fully applies.</li>
+        <li>Balance rule-style boxes (no em dashes) with fact-style dropdowns (Vite + React).</li>
+        <li>Check the workflow section so the assistant plans, tracks, and commits properly.</li>
+      </ul>
+    </section>
+
+    <section class="guide-card">
+      <h2>Reviews and previews</h2>
+      <p>The preview pane updates live in Markdown by default. Switch to JSON or YAML for pipelines and config-heavy tools. Use fullscreen to inspect long prompts before exporting.</p>
+      <ul>
+        <li>Markdown for chat assistants, JSON for automation, YAML for config lovers.</li>
+        <li>Fullscreen (`Ctrl/Cmd + Shift + F`) helps you read the whole brief.</li>
+        <li>The character count in the footer is a rough context-window sanity check.</li>
+      </ul>
+    </section>
+
+    <section class="guide-card">
+      <h2>Export, copy, and save</h2>
+      <p>Copy to clipboard or download the prompt. Save any combination as a preset, and export your presets as a JSON file to back them up or move machines.</p>
+      <ul>
+        <li>Paste and match lets you re-import an older prompt to restore all selections.</li>
+        <li>Every good run belongs in your repository next to the code it generated.</li>
+        <li>The footer counter tracks how many prompts you have generated.</li>
+      </ul>
+    </section>
+
+    <section class="guide-card">
+      <h2>History, undo, and sharing</h2>
+      <p>Prompt history keeps the last 20 generated prompts, undo/redo covers the last 50 edits, and any configuration fits in the URL hash for sharing.</p>
+      <ul>
+        <li>Open history with `Ctrl/Cmd + Shift + H` to recall any generated prompt.</li>
+        <li>Supply the full URL and the recipient sees the same selections.</li>
+        <li>Search filters every section, checkbox, dropdown, and text field at once.</li>
+      </ul>
+    </section>
+    <section class="tip-box page-prose">
+      <h2>Five habits that raise prompt quality</h2>
+      <ol>
+      <li>Be explicit about the outcome; every sentence narrows the space of plausible-but-wrong outputs.</li>
+      <li>Use dropdowns for facts and checkboxes for rules.</li>
+      <li>Prevention beats correction: state what not to do before it happens.</li>
+      <li>Iterate weekly and tighten one section at a time.</li>
+      <li>Read the output like a reviewer, not like a user.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <span>&copy; 2026 Prompt Architect &middot; Built by <a href="https://github.com/arundada9000" target="_blank" rel="noopener noreferrer">Arun Neupane</a></span>
+    <a href="/index.html#t=PWA">Open the builder</a>
+  </footer>
+</body>
+</html>

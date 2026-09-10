@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>404: This page took a wrong turn | Prompt Architect</title>
+  <meta name="description" content="404 - the page you are looking for does not exist. Back to the prompt builder.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://sajiloprompt.vercel.app/404.html">
+  <meta property="og:title" content="404: This page took a wrong turn">
+  <meta property="og:url" content="https://sajiloprompt.vercel.app/404.html">
+  <style>
+    :root {
+      --bg: #F2F2F7; --card: #FFFFFF; --label: #000000;
+      --secondary: #8E8E93; --blue: #007AFF; --tint: rgba(0,122,255,0.10);
+      --sep: rgba(60,60,67,0.09); --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #000000; --card: #1C1C1E; --label: #FFFFFF; --secondary: #98989D; --blue: #0A84FF; --tint: rgba(10,132,255,0.16); --sep: rgba(84,84,88,0.36); }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh; min-height: 100dvh;
+      display: grid; place-items: center; padding: 24px;
+      background: var(--bg); color: var(--label);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      width: 100%; max-width: 460px; text-align: center;
+      background: var(--card); border-radius: 20px;
+      border: 0.5px solid var(--sep);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10); padding: 48px 32px 40px;
+      animation: rise 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+    .logo {
+      width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 16px;
+      background: linear-gradient(160deg, #0A84FF, #0064E0);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(10,132,255,0.4);
+    }
+    .logo svg { width: 34px; height: 34px; fill: #fff; stroke: none; }
+    .code { font-size: 72px; font-weight: 700; letter-spacing: 4px; font-family: var(--mono); line-height: 1; }
+    .code span { color: var(--blue); }
+    h1 { font-size: 22px; font-weight: 600; margin: 18px 0 10px; }
+    p { font-size: 15px; color: var(--secondary); line-height: 1.6; margin-bottom: 6px; }
+    p b { color: var(--label); font-weight: 600; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 22px; padding: 12px 24px; border-radius: 999px;
+      background: var(--blue); color: #fff; text-decoration: none;
+      font-weight: 600; font-size: 15px; transition: transform 0.18s, opacity 0.18s;
+    }
+    .btn:active { transform: scale(0.96); opacity: 0.8; }
+    .credit { margin-top: 26px; font-size: 12px; color: var(--secondary); font-variant-numeric: tabular-nums; }
+    .credit a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2l2.09 6.26L20 9.27l-4.45 4.7L16.91 20 12 16.9 7.09 20l1.36-6.03L4 9.27l5.91-1.01z"/></svg>
+    </div>
+    <div class="code">4<span>0</span>4</div>
+    <h1>This page took a wrong turn</h1>
+    <p><b>Not even Arun's midnight commits</b><br>can find this page. It may have been moved, renamed, or never existed in the first place.</p>
+    <a class="btn" href="./">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Back to the prompt builder
+    </a>
+    <p class="credit">Built by <a href="https://github.com/arundada9000" target="_blank" rel="noopener noreferrer">Arun Neupane</a> &middot; sajiloprompt.vercel.app</p>
+  </main>
+  <script>
+    console.log("%c Prompt Architect %c Nothing to see on this route, friend. ", "background:#0A84FF;color:#fff;padding:2px 8px;border-radius:3px 0 0 3px;", "background:#1C1C1E;color:#98989D;padding:2px 8px;border-radius:0 3px 3px 0;");
+  </script>
+</body>
+</html>

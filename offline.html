@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>You are offline | Prompt Architect</title>
+  <meta name="description" content="Prompt Architect works offline for saved prompts and generated text.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://sajiloprompt.vercel.app/offline.html">
+  <style>
+    :root {
+      --bg: #F2F2F7; --card: #FFFFFF; --label: #000000;
+      --secondary: #8E8E93; --blue: #007AFF; --green: #34C759; --sep: rgba(60,60,67,0.09);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #000000; --card: #1C1C1E; --label: #FFFFFF; --secondary: #98989D; --blue: #0A84FF; --sep: rgba(84,84,88,0.36); }
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      min-height: 100vh; min-height: 100dvh;
+      display: grid; place-items: center; padding: 24px;
+      background: var(--bg); color: var(--label);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .card {
+      width: 100%; max-width: 460px; text-align: center;
+      background: var(--card); border-radius: 20px;
+      border: 0.5px solid var(--sep);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10); padding: 48px 32px 40px;
+      animation: rise 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px) scale(0.98); } }
+    .signal {
+      width: 64px; height: 64px; margin: 0 auto 20px; border-radius: 16px;
+      background: var(--tint, rgba(0,122,255,0.10));
+      display: flex; align-items: center; justify-content: center;
+    }
+    .signal svg { width: 32px; height: 32px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+    p { font-size: 15px; color: var(--secondary); line-height: 1.6; margin-bottom: 8px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 20px; padding: 12px 24px; border-radius: 999px;
+      background: var(--blue); color: #fff; border: none;
+      font-weight: 600; font-size: 15px; cursor: pointer;
+      transition: transform 0.18s, opacity 0.18s; font-family: inherit;
+    }
+    .btn:active { transform: scale(0.96); opacity: 0.8; }
+    .status { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: 13px; color: var(--green, #34C759); }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: pulse 1.4s infinite; }
+    @keyframes pulse { 50% { opacity: 0.3; } }
+    .credit { margin-top: 22px; font-size: 12px; color: var(--secondary); }
+    .credit a { color: var(--blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="signal" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+    </div>
+    <h1>You are offline</h1>
+    <p>Your saved presets and history live in this browser, so nothing precious was lost. The generator will be right back once the internet stops hiding.</p>
+    <div class="status" id="status">Waiting for a connection</div>
+    <button class="btn" id="reloadBtn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Retry now
+    </button>
+    <p class="credit">Built by <a href="https://github.com/arundada9000" target="_blank" rel="noopener noreferrer">Arun Neupane</a> &middot; sajiloprompt.vercel.app</p>
+  </main>
+  <script>
+    var statusEl = document.getElementById("status");
+    var reloadBtn = document.getElementById("reloadBtn");
+    function connected() {
+      if (navigator.onLine) {
+        statusEl.textContent = "Connection restored. Reloading...";
+        setTimeout(function () { location.reload(); }, 600);
+      }
+    }
+    window.addEventListener("online", connected);
+    reloadBtn.addEventListener("click", function () { location.reload(); });
+    connected();
+    console.log("%c Prompt Architect %c Offline is just a feature in disguise. ", "background:#0A84FF;color:#fff;padding:2px 8px;border-radius:3px 0 0 3px;", "background:#1C1C1E;color:#98989D;padding:2px 8px;border-radius:0 3px 3px 0;");
+  </script>
+</body>
+</html>

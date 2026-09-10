@@ -118,7 +118,8 @@ const PromptBuilder = (() => {
       lines.push(
         "",
         "## Developer profile",
-        String.raw`Read the developer profile at C:\Users\arunn\Desktop\ARUN-PROFILE.md and use only relevant information for appropriate attribution, author metadata, documentation, or project context.`
+        String.raw`Read the developer profile at C:\Users\arunn\Desktop\ARUN-PROFILE.md and use only relevant information for appropriate attribution, author metadata, documentation, or project context.`,
+        "Include a tasteful developer watermark wherever appropriate (footer credit, browser console message, README and documentation author metadata) without damaging the UI, cluttering the interface, or exposing private information."
       );
     }
 
