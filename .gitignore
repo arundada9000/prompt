@@ -1,0 +1,22 @@
+# OS noise
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+
+# Runtime (none used by this zero-dependency app, but be safe)
+node_modules/
+
+# Vercel CLI local state
+.vercel/
+
+# Temp
+*.tmp
+~$*.docx

@@ -1,4 +1,39 @@
+# Prompt Architect
+# A free, offline-first prompt generator for AI coding assistants.
+# https://sajiloprompt.vercel.app
+
 User-agent: *
 Allow: /
 
+# AI assistants and answer engines (this site ships content specifically for them)
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Anthropic-ai
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+User-agent: cohere-ai
+Allow: /
+User-agent: Bytespider
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: FacebookBot
+Allow: /
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# LLM site mapping
 Sitemap: https://sajiloprompt.vercel.app/sitemap.xml

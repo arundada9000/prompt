@@ -1,0 +1,31 @@
+# Prompt Architect
+
+> Prompt Architect is a free, offline-first prompt generator that assembles precise, production-ready development prompts for AI coding assistants. Pick requirement checkboxes, tune tech-stack dropdowns, and export one clean structured spec in Markdown, JSON, YAML, or plain text. No account, no tracking, no sign-up.
+
+## The tool
+
+- [Prompt Architect builder](https://sajiloprompt.vercel.app/): Design a precise development prompt by selecting requirement checkboxes and tuning details. Generates a structured, em-dash-free prompt for any AI coding assistant.
+- [Prompt Architect manifest](https://sajiloprompt.vercel.app/manifest.json): PWA manifest. The app is installable and works offline.
+
+## Core pages
+
+- [Guide](https://sajiloprompt.vercel.app/guide/): The full walkthrough. Start with the project card, mark requirements across 22 sections, review the live preview, export or save presets, and reuse work through history, undo/redo, and shareable URL snapshots.
+- [Journal](https://sajiloprompt.vercel.app/journal/): Practical articles on writing precise, production-ready development prompts and on the habits that make AI-generated builds reliable.
+
+## Journal articles
+
+- [Write prompts that get better output](https://sajiloprompt.vercel.app/journal/write-prompts-that-get-better-output.html): The difference between a mediocre and an excellent AI build is rarely the model. It is the prompt. Five concrete habits that raise output quality.
+- [The checklists behind a production-grade build](https://sajiloprompt.vercel.app/journal/the-checklists-behind-a-production-grade-build.html): Security, testing, performance, and documentation are not optional extras. They are the difference between working and worth shipping.
+- [From checklist to spec: exporting for different AI tools](https://sajiloprompt.vercel.app/journal/from-checklist-to-spec-exporting-for-different-ai-tools.html): Markdown for chat models, JSON for pipelines, YAML for config-heavy tools.
+- [Prompt security: your first layer of defense](https://sajiloprompt.vercel.app/journal/prompt-security-your-first-layer-of-defense.html): Injection, data leakage, and hallucinated dependencies are real risks in AI-generated code. Fold these requirements into every prompt.
+- [Performance requirements models actually follow](https://sajiloprompt.vercel.app/journal/performance-requirements-models-actually-follow.html): Vague goals like "make it fast" do nothing. Objective budgets and measured checkpoints produce measurable results.
+- [Accessibility built into the prompt](https://sajiloprompt.vercel.app/journal/accessibility-built-into-the-prompt.html): WCAG compliance is not a nice-to-have. Landmark roles, focus rings, contrast, and keyboard paths survive generation only if you request them.
+- [Designing a design system with AI](https://sajiloprompt.vercel.app/journal/designing-a-design-system-with-ai.html): Tokens, primitives, and components. A prompt that requests a real design system yields interfaces that look deliberate instead of random.
+- [PWA: thinking outside the tab](https://sajiloprompt.vercel.app/journal/pwa-thinking-outside-the-tab.html): Installable, offline, and fast. What a service worker and manifest actually commit to, and the prompt lines that make them real.
+- [SEO in the age of generative answer engines](https://sajiloprompt.vercel.app/journal/seo-and-generative-engine-optimization.html): For SEO you need meta, structured data, and crawlable pages. For AEO and GEO you need your content to be quotable by machines.
+- [Version control for your prompts](https://sajiloprompt.vercel.app/journal/version-control-for-your-prompts.html): Prompts change like code. Keep them reviewed, diffed, and exported so a great build is reproducible next week.
+
+## Errata
+
+- [Custom 404 page](https://sajiloprompt.vercel.app/404.html): On-brand not-found page.
+- [Offline page](https://sajiloprompt.vercel.app/offline.html): What visitors see without a connection; the PWA shell still works.

@@ -24,6 +24,7 @@ function head({ title, description, url, jsonld }) {
   <title>${esc(title)}</title>
   <meta name="description" content="${esc(description)}">
   <link rel="canonical" href="${url}">
+  <link rel="llms" href="/llms.txt">
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="Prompt Architect">
   <meta property="og:url" content="${url}">
@@ -184,6 +185,56 @@ ${cards}
 ${footer}`;
 }
 
+function llmsFull() {
+  const L = [];
+  L.push("# Prompt Architect");
+  L.push("");
+  L.push("Prompt Architect is a free, offline-first prompt generator that assembles precise, production-ready development prompts for AI coding assistants. Pick requirement checkboxes, tune tech-stack dropdowns, and export one clean structured spec in Markdown, JSON, YAML, or plain text. No account, no tracking, no sign-up.");
+  L.push("");
+  L.push(`- [Prompt Architect builder](${SITE}/): the interactive prompt builder`);
+  L.push(`- [Guide](${SITE}/guide/): the full walkthrough`);
+  L.push(`- [Journal](${SITE}/journal/): practical articles on writing development prompts`);
+  L.push("");
+  L.push("## The tool");
+  L.push("");
+  L.push("The builder turns reusable requirements into one clean, production-ready development prompt. Requirements are organised into 22 sections covering security, testing, performance, accessibility, PWA, SEO/AEO/GEO, deployment, CI/CD, design systems, and development workflow rules. Each section offers checkboxes (rules the prompt states verbatim), dropdowns (facts such as framework versions with rationale), and free-text fields. Conditional sections appear automatically; for example, picking PWA as the project type reveals the PWA requirements. The prompt preview updates live in Markdown, JSON, YAML, and plain text. Presets, prompt history (last 20), and undo/redo (last 50 steps) make work reusable, and any configuration can be shared as a URL hash. The app is an installable offline PWA with custom 404 and offline pages. Generated prompts enforce a strict quality bar: no em dashes and no emoji, plus explicit security, performance, accessibility, and documentation expectations drawn from the selected checkboxes.");
+  L.push("");
+  const g = Content.guide;
+  L.push(`## ${g.title}`);
+  L.push("");
+  L.push(`> ${g.description}`);
+  L.push("");
+  for (const p of g.intro) L.push(p + "");
+  L.push("");
+  for (const s of g.sections) {
+    L.push(`### ${s.heading}`);
+    L.push("");
+    L.push(s.text);
+    L.push("");
+    for (const li of s.list) L.push(`- ${li}`);
+    L.push("");
+  }
+  L.push("### Five habits that raise prompt quality");
+  L.push("");
+  for (let i = 0; i < g.tips.length; i++) L.push(`${i + 1}. ${g.tips[i]}`);
+  L.push("");
+  L.push("## Journal");
+  L.push("");
+  L.push("The journal publishes practical articles on writing precise, production-ready development prompts for AI coding assistants, and on the habits that make AI-generated builds reliable.");
+  L.push("");
+  for (const a of Content.journal) {
+    L.push(`### ${a.title}`);
+    L.push("");
+    L.push(`URL: ${SITE}/journal/${a.slug}.html`);
+    L.push("");
+    L.push(`> ${a.excerpt}`);
+    L.push("");
+    for (const p of a.body) L.push(p + "");
+    L.push("");
+  }
+  return L.join("\n") + "\n";
+}
+
 fs.mkdirSync(path.join(ROOT, "journal"), { recursive: true });
 fs.mkdirSync(path.join(ROOT, "guide"), { recursive: true });
 
@@ -192,5 +243,6 @@ for (const a of Content.journal) {
   fs.writeFileSync(path.join(ROOT, "journal", `${a.slug}.html`), articlePage(a));
 }
 fs.writeFileSync(path.join(ROOT, "guide", "index.html"), guidePage());
+fs.writeFileSync(path.join(ROOT, "llms-full.txt"), llmsFull());
 
-console.log(`emitted journal/index.html, ${Content.journal.length} article pages, guide/index.html`);
+console.log(`emitted journal/index.html, ${Content.journal.length} article pages, guide/index.html, llms-full.txt`);
