@@ -1,5 +1,5 @@
 /* Prompt Architect service worker */
-const CACHE = "prompt-architect-v3";
+const CACHE = "prompt-architect-v4";
 const PRECACHE = [
   "./",
   "./index.html",
@@ -52,18 +52,31 @@ const PRECACHE = [
 ];
 
 self.addEventListener("install", (event) => {
+  // Per-entry precache that never fails: a single slow/failed asset must not
+  // block activation, or an old service worker could keep running forever.
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting())
+    (async () => {
+      const cache = await caches.open(CACHE);
+      await Promise.all(PRECACHE.map((url) => cache.add(url).catch(() => {})));
+      self.skipWaiting();
+    })()
   );
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)));
+      if (self.registration.navigationPreload) {
+        try { await self.registration.navigationPreload.enable(); } catch (e) { /* optional */ }
+      }
+      await self.clients.claim();
+    })()
   );
 });
+
+const offlineDocument = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prompt Architect</title></head><body style="font-family:system-ui,sans-serif;padding:2rem;line-height:1.5">You are offline. Reconnect and reload this page.</body></html>';
 
 self.addEventListener("fetch", (event) => {
   const { request } = event;
@@ -74,37 +87,60 @@ self.addEventListener("fetch", (event) => {
 
   const isNavigate = request.mode === "navigate";
 
-  const respond = async () => {
-    // Icons: cache first, no network dependency
-    if (url.pathname.endsWith(".png") || url.pathname.endsWith(".svg")) {
-      return (await caches.match(request)) || (await caches.match("./icons/icons.svg"));
-    }
-
-    const hit = await caches.match(request);
-    if (hit) return hit;
-
-    try {
-      const response = await fetch(request);
-      if (response && (response.status === 200 || response.type === "opaque")) {
-        const copy = response.clone();
-        caches.open(CACHE)
-          .then((cache) => cache.put(request, copy))
-          .catch(() => { /* cache write failures are non-fatal */ });
-      }
-      return response;
-    } catch (err) {
-      // Offline fallback for navigations; never let a navigation reject.
-      return (
-        (await caches.match(isNavigate ? "./offline.html" : "./404.html")) ||
-        new Response(
-          isNavigate
-            ? '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prompt Architect</title></head><body style="font-family:system-ui,sans-serif;padding:2rem;line-height:1.5">You are offline. Reconnect and reload this page.</body></html>'
-            : "",
-          { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } }
-        )
-      );
-    }
+  const cacheWrite = (req, res) => {
+    caches.open(CACHE)
+      .then((cache) => cache.put(req, res.clone()))
+      .catch(() => { /* cache write failures are non-fatal */ });
   };
 
-  event.respondWith(respond());
+  if (isNavigate) {
+    // Network-first for page navigations: always fresh when online, cached copy
+    // offline. This can never reject a navigation.
+    event.respondWith((async () => {
+      try {
+        let response = null;
+        if (event.preloadResponse) {
+          try {
+            const preloaded = await event.preloadResponse;
+            if (preloaded && preloaded.ok) response = preloaded;
+          } catch (e) { /* ignore preload failures */ }
+        }
+        if (!response) response = await fetch(request);
+        if (response && response.ok) cacheWrite(request, response);
+        return response;
+      } catch (err) {
+        const cached =
+          (await caches.match(request)) ||
+          (await caches.match("./offline.html"));
+        return (
+          cached ||
+          new Response(offlineDocument, {
+            status: 200,
+            headers: { "Content-Type": "text/html; charset=utf-8" }
+          })
+        );
+      }
+    })());
+    return;
+  }
+
+  // Non-navigation: cache-first, fall back to network, then a safe fallback.
+  event.respondWith((async () => {
+    const hit = await caches.match(request);
+    if (hit) return hit;
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) cacheWrite(request, response);
+      return response;
+    } catch (err) {
+      const fallback = await caches.match("./404.html");
+      return (
+        fallback ||
+        new Response("", {
+          status: 200,
+          headers: { "Content-Type": "text/plain; charset=utf-8" }
+        })
+      );
+    }
+  })());
 });
