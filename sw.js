@@ -1,5 +1,5 @@
 /* Prompt Architect service worker */
-const CACHE = "prompt-architect-v2";
+const CACHE = "prompt-architect-v3";
 const PRECACHE = [
   "./",
   "./index.html",
@@ -74,24 +74,37 @@ self.addEventListener("fetch", (event) => {
 
   const isNavigate = request.mode === "navigate";
 
-  // Icons: cache first, no network dependency
-  if (url.pathname.endsWith(".png") || url.pathname.endsWith(".svg")) {
-    event.respondWith(caches.match(request).then((hit) => hit || caches.match("./icons/icons.svg")));
-    return;
-  }
+  const respond = async () => {
+    // Icons: cache first, no network dependency
+    if (url.pathname.endsWith(".png") || url.pathname.endsWith(".svg")) {
+      return (await caches.match(request)) || (await caches.match("./icons/icons.svg"));
+    }
 
-  event.respondWith(
-    caches.match(request).then((hit) => {
-      if (hit) return hit;
-      return fetch(request).then((response) => {
-        if (response && (response.status === 200 || response.type === "opaque")) {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      }).catch(() => {
-        return caches.match(isNavigate ? "./offline.html" : "./404.html");
-      });
-    })
-  );
+    const hit = await caches.match(request);
+    if (hit) return hit;
+
+    try {
+      const response = await fetch(request);
+      if (response && (response.status === 200 || response.type === "opaque")) {
+        const copy = response.clone();
+        caches.open(CACHE)
+          .then((cache) => cache.put(request, copy))
+          .catch(() => { /* cache write failures are non-fatal */ });
+      }
+      return response;
+    } catch (err) {
+      // Offline fallback for navigations; never let a navigation reject.
+      return (
+        (await caches.match(isNavigate ? "./offline.html" : "./404.html")) ||
+        new Response(
+          isNavigate
+            ? '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Prompt Architect</title></head><body style="font-family:system-ui,sans-serif;padding:2rem;line-height:1.5">You are offline. Reconnect and reload this page.</body></html>'
+            : "",
+          { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } }
+        )
+      );
+    }
+  };
+
+  event.respondWith(respond());
 });

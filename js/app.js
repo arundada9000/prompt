@@ -344,7 +344,7 @@
       });
     }
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js").catch(() => { /* offline optional */ });
+      navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(() => { /* offline optional */ });
     }
   }
 
@@ -844,14 +844,6 @@
     if (welcomeGuideBtn) welcomeGuideBtn.addEventListener("click", () => { closeModal("welcomeModal"); openModal("guideModal"); });
     const welcomeStartBtn = $("welcomeStartBtn");
     if (welcomeStartBtn) welcomeStartBtn.addEventListener("click", () => closeModal("welcomeModal"));
-
-    // Footer export buttons
-    document.querySelectorAll(".footer-link[data-format]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        setExportFormat(btn.dataset.format);
-        exportPrompt();
-      });
-    });
 
     // Footer install
     const footerInstallBtn = $("footerInstallBtn");
